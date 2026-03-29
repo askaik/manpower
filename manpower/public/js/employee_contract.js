@@ -1,6 +1,7 @@
 frappe.ui.form.on('Employee', {
     refresh: function(frm) {
-        frm.add_custom_button(__('Generate Contract'), function() {
+        if (!frm.is_new() && frm.doc.docstatus === 0) {
+            frm.add_custom_button(__('Generate Contract'), function() {
             let d = new frappe.ui.Dialog({
                 title: __('Enter Contract Details'),
                 fields: [
@@ -31,5 +32,6 @@ frappe.ui.form.on('Employee', {
             });
             d.show();
         }, __('Manpower'));
+        }
     }
 });
