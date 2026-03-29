@@ -10,4 +10,4 @@ doctype_js = {
     "Employee": "public/js/employee_contract.js"
 }
 
-after_migrate = "manpower.setup.install.after_migrate"
+after_migrate = "manpower.manpower.setup.install.after_migrate"
