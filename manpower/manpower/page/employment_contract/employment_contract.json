@@ -4,6 +4,7 @@
  "doctype": "Page",
  "modified": "2024-01-01 12:00:00.000000",
  "module": "manpower",
+ "name": "employment-contract",
  "page_name": "employment-contract",
  "roles": [
   { "role": "System Manager" },
