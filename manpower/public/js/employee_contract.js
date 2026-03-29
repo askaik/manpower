@@ -23,11 +23,12 @@ frappe.ui.form.on('Employee', {
                 primary_action_label: __('Generate'),
                 primary_action: function(values) {
                     d.hide();
-                    frappe.set_route('employment-contract', {
+                    const params = new URLSearchParams({
                         employee_id: frm.doc.name,
                         location: values.location,
                         contract_date: values.contract_date
-                    });
+                    }).toString();
+                    window.open('/app/employment-contract?' + params, '_blank');
                 }
             });
             d.show();
