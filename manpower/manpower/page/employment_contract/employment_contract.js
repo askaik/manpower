@@ -289,7 +289,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   body {
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     background: var(--bg);
     color: var(--text);
     direction: rtl;
@@ -328,17 +328,17 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     padding: 3px 8px;
     border-radius: 4px;
     margin-bottom: 8px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
   }
 
   .sidebar-logo h2 {
     color: #fff !important;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     font-size: 17px;
     font-weight: 700;
     line-height: 1.3;
   }
-  .sidebar-logo p { color: var(--sidebar-text) !important; font-size: 12px; margin-top: 4px; font-family: 'Tajawal', sans-serif; }
+  .sidebar-logo p { color: var(--sidebar-text) !important; font-size: 12px; margin-top: 4px; font-family: Tajawal, sans-serif; }
 
   nav { padding: 12px 0; flex: 1; }
 
@@ -347,7 +347,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     font-size: 11px;
     font-weight: 700;
     padding: 12px 20px 6px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
   }
 
   nav a {
@@ -361,7 +361,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     padding: 8px 20px;
     border-right: 3px solid transparent;
     transition: all 0.15s;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     cursor: pointer;
   }
   nav a:hover { color: #fff !important; background: rgba(255,255,255,0.05); border-right-color: var(--sidebar-active); }
@@ -379,7 +379,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     color: #fff;
     border: none;
     border-radius: 6px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -428,10 +428,10 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     margin-bottom: 14px;
     border: 1px solid rgba(44,125,165,0.4);
     position: relative;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
   }
   .hero h1 {
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     font-size: 32px;
     color: #fff;
     font-weight: 700;
@@ -446,7 +446,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
   .form-section { margin-bottom: 48px; scroll-margin-top: 24px; direction: rtl; }
   .section-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; padding-bottom:12px; }
   .section-icon { width:36px; height:36px; background:var(--blue-light); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink: 0; }
-  .section-header h2 { font-family:'Tajawal',sans-serif; font-size:20px; color:var(--navy); font-weight:800; letter-spacing:-0.3px; }
+  .section-header h2 { font-family:Tajawal,sans-serif; font-size:20px; color:var(--navy); font-weight:800; letter-spacing:-0.3px; }
 
   /* ── FORM GRID ── */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -478,7 +478,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     border-radius: 6px;
     padding: 10px 14px;
     font-size: 14px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     color: var(--text);
     background: var(--white);
     transition: border-color 0.15s, box-shadow 0.15s;
@@ -513,8 +513,8 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
   .toggle-option:hover { border-color: var(--blue-mid); background: var(--blue-light); }
   .toggle-option.selected { border-color: var(--blue); background: var(--blue-light); }
   .toggle-option input { display: none; }
-  .toggle-option-label { font-size: 13.5px; font-weight: 600; color: var(--text); display: block; font-family: 'Tajawal', sans-serif; }
-  .toggle-option-hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; display: block; font-family: 'Tajawal', sans-serif; }
+  .toggle-option-label { font-size: 13.5px; font-weight: 600; color: var(--text); display: block; font-family: Tajawal, sans-serif; }
+  .toggle-option-hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; display: block; font-family: Tajawal, sans-serif; }
   .toggle-option.selected .toggle-option-label { color: var(--navy); }
 
   /* Years field visibility */
@@ -537,12 +537,12 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     align-items: center;
     justify-content: space-between;
   }
-  .preview-header span { color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 600; font-family: 'Tajawal', sans-serif; }
+  .preview-header span { color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 600; font-family: Tajawal, sans-serif; }
   .preview-body {
     padding: 36px 40px;
     direction: rtl;
     text-align: right;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     font-size: 13.5px;
     line-height: 2;
     color: var(--text);
@@ -568,7 +568,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     font-size: 20px;
     font-weight: 700;
     color: var(--navy);
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     margin-top: 2px;
   }
   .contract-title p {
@@ -616,7 +616,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     padding: 2px 10px;
     border-radius: 4px;
     margin: -16px -20px 10px -20px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
   }
   .party-block table { width: 100%; border-collapse: collapse; direction: rtl; }
   .party-block td { padding: 6px 0; font-size: 13px; text-align: right; }
@@ -644,7 +644,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     font-weight: 700;
     padding: 3px 10px;
     border-radius: 4px;
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     vertical-align: middle;
     line-height: 1.6;
   }
@@ -656,7 +656,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     padding-right: 14px;
     margin-right: 8px;
     border-right: 2px solid rgba(44,125,165,0.35);
-    font-family: 'Tajawal', sans-serif;
+    font-family: Tajawal, sans-serif;
     vertical-align: middle;
   }
   .clause-body {
@@ -845,7 +845,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
       text-align: center;
       font-size: 10pt;
       color: #5a7080;
-      font-family: 'Tajawal', sans-serif;
+      font-family: Tajawal, sans-serif;
       padding: 4px 0;
     }
   }
