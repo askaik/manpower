@@ -9,3 +9,5 @@ required_apps = ["erpnext"]
 doctype_js = {
     "Employee": "public/js/employee_contract.js"
 }
+
+after_migrate = "manpower.setup.install.after_migrate"

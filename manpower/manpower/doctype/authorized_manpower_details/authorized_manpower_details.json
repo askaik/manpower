@@ -1,0 +1,51 @@
+{
+ "actions": [],
+ "creation": "2024-03-30 00:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "name1",
+  "civil_id",
+  "company_name",
+  "arabic_company_name"
+ ],
+ "fields": [
+  {
+   "fieldname": "name1",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Name",
+   "reqd": 1
+  },
+  {
+   "fieldname": "civil_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Civil ID",
+   "reqd": 1
+  },
+  {
+   "fieldname": "company_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Company Name"
+  },
+  {
+   "fieldname": "arabic_company_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Arabic Company Name"
+  }
+ ],
+ "istable": 1,
+ "links": [],
+ "modified": "2024-03-30 00:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "Manpower",
+ "name": "authorized manpower details",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
