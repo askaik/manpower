@@ -1,11 +1,13 @@
 frappe.pages['employment-contract'].on_page_load = function(wrapper) {
+    let page_html = $(wrapper).html();
+
     let page = frappe.ui.make_app_page({
         parent: wrapper,
         title: __('Employment Contract'),
         single_column: true
     });
 
-    $(frappe.render_template('employment_contract', {})).appendTo(page.main);
+    $(page_html).appendTo(page.main);
 
     let urlParams = new URLSearchParams(window.location.search);
     let route_options = frappe.route_options || {};

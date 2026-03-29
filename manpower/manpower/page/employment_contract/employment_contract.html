@@ -22,7 +22,7 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
+  .manpower-contract-wrapper {
     font-family: 'Tajawal', sans-serif;
     background: var(--bg);
     color: var(--text);
@@ -32,7 +32,7 @@
   .app { display: flex; min-height: 100vh; }
 
   /* ── SIDEBAR ── */
-  aside {
+  .manpower-contract-wrapper aside {
     width: 260px;
     min-width: 260px;
     background: var(--sidebar-bg);
@@ -74,7 +74,7 @@
   }
   .sidebar-logo p { color: var(--sidebar-text) !important; font-size: 12px; margin-top: 4px; font-family: 'Tajawal', sans-serif; }
 
-  nav { padding: 12px 0; flex: 1; }
+  .manpower-contract-wrapper nav { padding: 12px 0; flex: 1; }
 
   .nav-section-label {
     color: rgba(184,207,224,0.95) !important;
@@ -126,7 +126,7 @@
   .btn-print:hover { background: #2569a0; }
 
   /* ── MAIN ── */
-  main {
+  .manpower-contract-wrapper main {
     margin-right: 260px;
     flex: 1;
     padding: 48px 56px;
@@ -272,7 +272,7 @@
     justify-content: space-between;
   }
   .preview-header span { color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 600; font-family: 'Tajawal', sans-serif; }
-  .preview-body {
+  .preview-.manpower-contract-wrapper {
     padding: 36px 40px;
     direction: rtl;
     text-align: right;
@@ -393,7 +393,7 @@
     font-family: 'Tajawal', sans-serif;
     vertical-align: middle;
   }
-  .clause-body {
+  .clause-.manpower-contract-wrapper {
     font-size: 13.5px;
     line-height: 1.9;
     color: var(--text);
@@ -453,12 +453,12 @@
       display: none !important;
     }
 
-    body {
+    .manpower-contract-wrapper {
       background: #fff !important;
       direction: rtl !important;
     }
 
-    main {
+    .manpower-contract-wrapper main {
       margin: 0 !important;
       padding: 0 !important;
       max-width: 100% !important;
@@ -477,7 +477,7 @@
       margin: 0 !important;
     }
 
-    .preview-body {
+    .preview-.manpower-contract-wrapper {
       max-height: none !important;
       overflow: visible !important;
       padding: 0 !important;
@@ -585,8 +585,8 @@
   }
 
   @media (max-width: 900px) {
-    aside { display: none; }
-    main { margin-right: 0; padding: 24px 20px; max-width: 100%; }
+    .manpower-contract-wrapper aside { display: none; }
+    .manpower-contract-wrapper main { margin-right: 0; padding: 24px 20px; max-width: 100%; }
     .form-grid { grid-template-columns: 1fr; }
     .field.span-2 { grid-column: span 1; }
     .form-grid.cols-3 { grid-template-columns: 1fr; }
