@@ -1,0 +1,17 @@
+{
+ "creation": "2024-01-01 12:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Page",
+ "modified": "2024-01-01 12:00:00.000000",
+ "module": "manpower",
+ "page_name": "employment-contract",
+ "roles": [
+  { "role": "System Manager" },
+  { "role": "HR Manager" },
+  { "role": "HR User" }
+ ],
+ "script": "manpower/page/employment_contract/employment_contract.js",
+ "style": "",
+ "title": "Employment Contract",
+ "view_template": "manpower/page/employment_contract/employment_contract.html"
+}
