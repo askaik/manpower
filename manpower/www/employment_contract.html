@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نموذج عقد عمل - KPG</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0E2841;
+    --blue: #2C7DA5;
+    --blue-light: #e8f4fb;
+    --blue-mid: #b5d4f4;
+    --green: #1d6b44;
+    --green-light: #eaf6f0;
+    --green-border: #a3d9bb;
+    --bg: #f7f8fa;
+    --sidebar-bg: #0E2841;
+    --sidebar-text: #b8cfe0;
+    --sidebar-active: #2C7DA5;
+    --text: #1a2a3a;
+    --text-muted: #5a7080;
+    --border: #dde4ea;
+    --white: #ffffff;
+    --radius: 8px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    direction: rtl;
+  }
+
+  .app { display: flex; min-height: 100vh; }
+
+  /* ── SIDEBAR ── */
+  aside {
+    width: 260px;
+    min-width: 260px;
+    background: var(--sidebar-bg);
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-logo {
+    padding: 24px 20px 16px;
+    direction: rtl;
+    text-align: right;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .wiki-badge {
+    display: inline-block;
+    background: var(--blue);
+    color: #fff !important;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+    font-family: 'Tajawal', sans-serif;
+  }
+
+  .sidebar-logo h2 {
+    color: #fff !important;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .sidebar-logo p { color: var(--sidebar-text) !important; font-size: 12px; margin-top: 4px; font-family: 'Tajawal', sans-serif; }
+
+  nav { padding: 12px 0; flex: 1; }
+
+  .nav-section-label {
+    color: rgba(184,207,224,0.95) !important;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 12px 20px 6px;
+    font-family: 'Tajawal', sans-serif;
+  }
+
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    direction: rtl;
+    color: #d8e8f4 !important;
+    text-decoration: none !important;
+    font-size: 13.5px;
+    padding: 8px 20px;
+    border-right: 3px solid transparent;
+    transition: all 0.15s;
+    font-family: 'Tajawal', sans-serif;
+    cursor: pointer;
+  }
+  nav a:hover { color: #fff !important; background: rgba(255,255,255,0.05); border-right-color: var(--sidebar-active); }
+  nav a.active { color: #fff !important; background: rgba(44,125,165,0.15); border-right-color: var(--sidebar-active); }
+  .nav-icon { width: 18px; text-align: center; font-size: 14px; opacity: 1 !important; color: #d8e8f4 !important; }
+
+  .sidebar-footer {
+    padding: 16px 20px;
+  }
+
+  .btn-print {
+    width: 100%;
+    padding: 10px;
+    background: var(--blue);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-print:hover { background: #2569a0; }
+
+  /* ── MAIN ── */
+  main {
+    margin-right: 260px;
+    flex: 1;
+    padding: 48px 56px;
+    max-width: calc(100% - 260px);
+    box-sizing: border-box;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--navy);
+    border-radius: 12px;
+    padding: 36px 44px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+    direction: rtl;
+    text-align: right;
+  }
+  .hero::before { content:''; position:absolute; top:-40px; left:-40px; width:200px; height:200px; border-radius:50%; background:rgba(44,125,165,0.2); }
+  .hero::after  { content:''; position:absolute; bottom:-30px; left:60px; width:120px; height:120px; border-radius:50%; background:rgba(44,125,165,0.12); }
+
+  .hero-badge {
+    display: block;
+    text-align: right;
+    background: rgba(44,125,165,0.35);
+    color: #8ecef0;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(44,125,165,0.4);
+    position: relative;
+    font-family: 'Tajawal', sans-serif;
+  }
+  .hero h1 {
+    font-family: 'Tajawal', sans-serif;
+    font-size: 32px;
+    color: #fff;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: 10px;
+    position: relative;
+    text-align: right;
+  }
+  .hero p { color: rgba(255,255,255,0.65); font-size: 14px; line-height: 1.7; position: relative; text-align: right; }
+
+  /* ── SECTIONS ── */
+  .form-section { margin-bottom: 48px; scroll-margin-top: 24px; direction: rtl; }
+  .section-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; padding-bottom:12px; }
+  .section-icon { width:36px; height:36px; background:var(--blue-light); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink: 0; }
+  .section-header h2 { font-family:'Tajawal',sans-serif; font-size:20px; color:var(--navy); font-weight:800; letter-spacing:-0.3px; }
+
+  /* ── FORM GRID ── */
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+  .form-grid.cols-1 { grid-template-columns: 1fr; }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .field.span-2 { grid-column: span 2; }
+
+  .field label {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    direction: rtl;
+  }
+  .field label .req { color: var(--blue); font-size: 15px; line-height: 1; }
+
+  .field input,
+  .field select,
+  .field textarea {
+    border: 1.5px solid var(--border);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: 'Tajawal', sans-serif;
+    color: var(--text);
+    background: var(--white);
+    transition: border-color 0.15s, box-shadow 0.15s;
+    outline: none;
+    direction: rtl;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(44,125,165,0.12);
+  }
+  .field input::placeholder,
+  .field textarea::placeholder { color: #bbb; }
+  .field input[type="number"] { direction: rtl; text-align: right; }
+  .field input[type="date"] { direction: rtl; unicode-bidi: bidi-override; text-align: right; }
+
+  .field .hint { font-size: 11.5px; color: var(--text-muted); }
+
+  /* ── CONTRACT TYPE TOGGLE ── */
+  .toggle-group { display: flex; gap: 10px; }
+  .toggle-option {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    background: var(--white);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-align: center;
+  }
+  .toggle-option:hover { border-color: var(--blue-mid); background: var(--blue-light); }
+  .toggle-option.selected { border-color: var(--blue); background: var(--blue-light); }
+  .toggle-option input { display: none; }
+  .toggle-option-label { font-size: 13.5px; font-weight: 600; color: var(--text); display: block; font-family: 'Tajawal', sans-serif; }
+  .toggle-option-hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; display: block; font-family: 'Tajawal', sans-serif; }
+  .toggle-option.selected .toggle-option-label { color: var(--navy); }
+
+  /* Years field visibility */
+  .years-field { transition: opacity 0.2s; }
+  .years-field.hidden { opacity: 0.3; pointer-events: none; }
+
+  /* ── PREVIEW ── */
+  .preview-wrap {
+    background: var(--white);
+    border-radius: var(--radius);
+    overflow: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .preview-header {
+    background: var(--navy);
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .preview-header span { color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 600; font-family: 'Tajawal', sans-serif; }
+  .preview-body {
+    padding: 36px 40px;
+    direction: rtl;
+    text-align: right;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13.5px;
+    line-height: 2;
+    color: var(--text);
+    max-height: 900px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .contract-title {
+    text-align: center;
+    margin-bottom: 8px;
+  }
+  .contract-title img {
+    display: block;
+    margin: 0 auto 4px;
+  }
+  .contract-title h2 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--navy);
+    font-family: 'Tajawal', sans-serif;
+    margin-top: 2px;
+  }
+  .contract-title p {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+  }
+
+  .contract-meta {
+    text-align: center;
+    margin: 16px 0;
+    padding: 10px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .contract-intro {
+    margin: 20px 0;
+    font-size: 14px;
+    font-weight: 600;
+    direction: rtl;
+    text-align: right;
+  }
+
+  .party-block {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 16px 20px;
+    margin: 12px 0;
+    border-right: 3px solid var(--blue);
+    border-left: 3px solid var(--blue);
+    direction: rtl;
+    text-align: right;
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+  }
+  .party-block .party-tag {
+    display: block;
+    text-align: center;
+    background: var(--blue);
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 4px;
+    margin: -16px -20px 10px -20px;
+    font-family: 'Tajawal', sans-serif;
+  }
+  .party-block table { width: 100%; border-collapse: collapse; direction: rtl; }
+  .party-block td { padding: 6px 0; font-size: 13px; text-align: right; }
+  .party-block td:first-child { font-weight: 700; width: 180px; color: var(--navy); }
+  .party-block td:last-child { color: var(--text-muted); font-weight: 400; }
+
+  .clause {
+    margin: 20px 0;
+  }
+  .clause-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 6px;
+    direction: rtl;
+    text-align: right;
+    display: block;
+    line-height: 2;
+  }
+  .clause-num {
+    display: inline-block;
+    background: var(--navy);
+    color: #fff !important;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-family: 'Tajawal', sans-serif;
+    vertical-align: middle;
+    line-height: 1.6;
+  }
+  .clause-name {
+    display: inline;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    padding-right: 14px;
+    margin-right: 8px;
+    border-right: 2px solid rgba(44,125,165,0.35);
+    font-family: 'Tajawal', sans-serif;
+    vertical-align: middle;
+  }
+  .clause-body {
+    font-size: 13.5px;
+    line-height: 1.9;
+    color: var(--text);
+    padding-right: 0;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
+  }
+
+  .field-val {
+    display: inline;
+    color: var(--blue);
+    font-weight: 700;
+  }
+  .field-empty {
+    display: inline;
+    color: #ccc;
+    font-weight: 400;
+    font-style: italic;
+    font-size: 12px;
+  }
+
+  .signature-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 20px;
+  }
+  .sig-party { text-align: center; width: 200px; }
+  .sig-party p { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 40px; }
+  .sig-line { border-bottom: 1px solid var(--text); width: 160px; margin: 0 auto; }
+
+  /* ── PRINT ── */
+  @page {
+    size: A4;
+    margin: 15mm;
+  }
+
+  @media print {
+    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    aside, .hero, .section-header, .preview-header,
+    #section-header, #section-firstparty, #section-secondparty, #section-terms {
+      display: none !important;
+    }
+
+    /* Hide ERPNext branding, subscription, and footer elements */
+    .web-footer, .footer, .powered-by, .subscribe,
+    [class*="powered"], [class*="subscribe"],
+    .website-footer, .footer-subscribe, .email-subscribe,
+    footer, .btn-subscribe, .frappe-footer,
+    .footer-powered, .web-footer-container {
+      display: none !important;
+    }
+
+    body {
+      background: #fff !important;
+      direction: rtl !important;
+    }
+
+    main {
+      margin: 0 !important;
+      padding: 0 !important;
+      max-width: 100% !important;
+      width: 100% !important;
+    }
+
+    #section-preview {
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+
+    .preview-wrap {
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+
+    .preview-body {
+      max-height: none !important;
+      overflow: visible !important;
+      padding: 0 !important;
+      font-size: 12pt !important;
+      line-height: 1.9 !important;
+      direction: rtl !important;
+    }
+
+    /* ── Header centering ── */
+    .contract-title {
+      text-align: center !important;
+      direction: ltr !important;
+      margin: 0 auto 4px !important;
+      width: 100% !important;
+    }
+    .contract-title img {
+      width: 150px !important;
+      height: auto !important;
+      display: block !important;
+      margin: 0 auto 0 auto !important;
+    }
+    .contract-title h2 {
+      font-size: 18pt !important;
+      text-align: center !important;
+      margin: 2px 0 0 0 !important;
+      direction: rtl !important;
+    }
+    .contract-title p {
+      text-align: center !important;
+      direction: rtl !important;
+      margin: 0 !important;
+    }
+    .contract-meta {
+      text-align: center !important;
+      direction: rtl !important;
+      border-color: #dde4ea !important;
+    }
+
+    /* ── Party blocks: borders on both sides, tag spans full width ── */
+    .party-block {
+      break-inside: avoid;
+      page-break-inside: avoid;
+      border-right: 3px solid #2C7DA5 !important;
+      border-left: 3px solid #2C7DA5 !important;
+      background: #f7f8fa !important;
+      padding: 0 20px 16px 20px !important;
+      overflow: hidden !important;
+    }
+    .party-block .party-tag {
+      background: #2C7DA5 !important;
+      color: #fff !important;
+      text-align: center !important;
+      display: block !important;
+      margin: 0 -20px 10px -20px !important;
+      padding: 4px 10px !important;
+      border-radius: 0 !important;
+    }
+
+    .clause { break-inside: avoid; page-break-inside: avoid; }
+    .clause-num { background: #0E2841 !important; color: #fff !important; }
+
+    /* ── Signature row: force both parties visible ── */
+    .signature-row {
+      display: flex !important;
+      justify-content: space-between !important;
+      break-inside: avoid !important;
+      page-break-inside: avoid !important;
+      page-break-before: avoid !important;
+      margin-top: 40px !important;
+      padding-top: 20px !important;
+      width: 100% !important;
+    }
+    .sig-party {
+      width: 40% !important;
+      text-align: center !important;
+      display: block !important;
+      visibility: visible !important;
+    }
+    .sig-party p {
+      visibility: visible !important;
+      display: block !important;
+    }
+    .sig-line {
+      visibility: visible !important;
+      display: block !important;
+      border-bottom: 1px solid #1a2a3a !important;
+    }
+
+    .field-val { color: #1a2a3a !important; font-weight: 700 !important; }
+    .field-empty { color: #aaa !important; }
+
+    /* ── Page number footer ── */
+    .print-page-footer {
+      display: block !important;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 10pt;
+      color: #5a7080;
+      font-family: 'Tajawal', sans-serif;
+      padding: 4px 0;
+    }
+  }
+
+  @media (max-width: 900px) {
+    aside { display: none; }
+    main { margin-right: 0; padding: 24px 20px; max-width: 100%; }
+    .form-grid { grid-template-columns: 1fr; }
+    .field.span-2 { grid-column: span 1; }
+    .form-grid.cols-3 { grid-template-columns: 1fr; }
+  }
+
+
+  /* ── ERPNEXT CONTAINMENT FIXES ── */
+  .preview-body *, .clause-body, .party-block, .contract-meta,
+  .contract-intro, .clause, .signature-row {
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .preview-body p, .preview-body div, .preview-body span {
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+  /* ── ERPNEXT COLOR OVERRIDES ── */
+  aside a, aside a:visited, aside a:hover, aside a:active,
+  aside nav a, aside nav a:visited {
+    color: #d8e8f4 !important;
+    text-decoration: none !important;
+  }
+  aside nav a:hover, aside nav a.active {
+    color: #ffffff !important;
+  }
+  aside * { box-sizing: border-box; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- SIDEBAR -->
+  <aside>
+    <div class="sidebar-logo">
+      <div style="text-align:center;margin-bottom:12px;">
+        <img src="https://erp.kuwaitgroupco.com/files/Public-Authority-of-Manpower1.png" alt="الهيئة العامة للقوى العاملة" style="width:376px;height:auto;filter:brightness(0) invert(1);opacity:0.9;">
+      </div>
+      <div class="wiki-badge">KPG</div>
+      <h2>نموذج عقد العمل</h2>
+      <p>القطاع الأهلي · دولة الكويت · 2025</p>
+    </div>
+    <nav>
+      <div class="nav-section-label">أقسام النموذج</div>
+      <a onclick="scrollToSection('section-header')" class="active">
+        <span class="nav-icon">📄</span> بيانات العقد
+      </a>
+      <a onclick="scrollToSection('section-firstparty')">
+        <span class="nav-icon">🏢</span> الطرف الأول (الشركة)
+      </a>
+      <a onclick="scrollToSection('section-secondparty')">
+        <span class="nav-icon">👤</span> الطرف الثاني (الموظف)
+      </a>
+      <a onclick="scrollToSection('section-terms')">
+        <span class="nav-icon">📋</span> شروط العقد
+      </a>
+      <div class="nav-section-label" style="margin-top:8px;">معاينة</div>
+      <a onclick="scrollToSection('section-preview')">
+        <span class="nav-icon">👁️</span> معاينة العقد
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <button class="btn-print" onclick="exportPDF()" style="margin-bottom:8px;">
+        <span>📥</span> حفظ كـ PDF
+      </button>
+      <button class="btn-print" onclick="window.print()" style="background:#1a3f5c;">
+        <span>🖨️</span> طباعة العقد
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main>
+
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-badge">KUWAIT PRIVATE SECTOR</div>
+      <h1>نموذج عـقـد عـمـل<br>في القطاع الأهلي</h1>
+      <p>أدخل بيانات العقد في الحقول أدناه، وستظهر المعاينة تلقائياً في الأسفل.</p>
+    </div>
+
+    <!-- SECTION 1: CONTRACT HEADER -->
+    <div class="form-section" id="section-header">
+      <div class="section-header">
+        <div class="section-icon">📄</div>
+        <h2>بيانات العقد</h2>
+      </div>
+      <div class="form-grid cols-3">
+        <div class="field">
+          <label>الموقع / المنطقة <span class="req">·</span></label>
+          <input type="text" id="f_location" placeholder="مثال: العاصمة" value="{{ location }}" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>اليوم</label>
+          <input type="text" id="f_day" placeholder="مثال: الأحد" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>التاريخ</label>
+          <input type="date" id="f_date" value="{{ contract_date }}" oninput="updatePreview()">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 2: FIRST PARTY -->
+    <div class="form-section" id="section-firstparty">
+      <div class="section-header">
+        <div class="section-icon">🏢</div>
+        <h2>الطرف الأول · صاحب العمل</h2>
+      </div>
+      <div class="form-grid">
+        <div class="field span-2">
+          <label>اسم الشركة <span class="req">·</span></label>
+          <input type="text" id="f_company" placeholder="الاسم الرسمي للشركة" value="{{ company.company_name if company else '' }}" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>اسم المفوض بالتوقيع</label>
+          <input type="text" id="f_auth_name" placeholder="الاسم الكامل" value="{{ company.custom_auth_name if company else '' }}" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>الرقم المدني للمفوض</label>
+          <input type="text" id="f_auth_civil" placeholder="12 رقماً" oninput="updatePreview()">
+        </div>
+        <div class="field span-2">
+          <label>مجال عمل الشركة <span class="req">·</span></label>
+          <input type="text" id="f_company_spec" placeholder="مثال: تجارة التجزئة، الخدمات المالية..." value="{{ company.custom_specialization_ if company else '' }}" oninput="updatePreview()">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 3: SECOND PARTY -->
+    <div class="form-section" id="section-secondparty">
+      <div class="section-header">
+        <div class="section-icon">👤</div>
+        <h2>الطرف الثاني · الموظف</h2>
+      </div>
+      <div class="form-grid">
+        <div class="field span-2">
+          <label>الاسم الكامل للموظف <span class="req">·</span></label>
+          <input type="text" id="f_emp_name" placeholder="الاسم الكامل" value="{{ emp.custom_arabic_name if emp and emp.custom_arabic_name else (emp.employee_name if emp else '') }}" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>الجنسية</label>
+          <input type="text" id="f_nationality" placeholder="مثال: مصرية، هندية..." value="{{ emp.custom_nationality if emp else '' }}" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>الرقم المدني</label>
+          <input type="text" id="f_emp_civil" placeholder="12 رقماً" value="{{ emp.custom_civil_id if emp else '' }}" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>رقم الإقامة</label>
+          <input type="text" id="f_res_id" placeholder="رقم الإقامة" oninput="updatePreview()">
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 4: CONTRACT TERMS -->
+    <div class="form-section" id="section-terms">
+      <div class="section-header">
+        <div class="section-icon">📋</div>
+        <h2>شروط العقد</h2>
+      </div>
+      <div class="form-grid">
+        <div class="field span-2">
+          <label>المسمى الوظيفي <span class="req">·</span></label>
+          <input type="text" id="f_title" placeholder="مثال: محاسب، مهندس، مبرمج..." value="{{ emp.custom_arabic_title if emp and emp.custom_arabic_title else (emp.designation if emp else '') }}" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>الراتب الشهري (دينار كويتي) <span class="req">·</span></label>
+          <input type="number" id="f_salary" placeholder="0.000" min="0" step="0.001" oninput="updatePreview()">
+        </div>
+        <div class="field">
+          <label>تاريخ بدء نفاذ العقد <span class="req">·</span></label>
+          <input type="date" id="f_effective_date" value="{{ contract_date }}" oninput="updatePreview()">
+        </div>
+        <div class="field span-2">
+          <label>نوع العقد</label>
+          <div class="toggle-group">
+            <label class="toggle-option selected" id="toggle-fixed" onclick="selectContractType('fixed')">
+              <input type="radio" name="contract_type" value="fixed" checked>
+              <span class="toggle-option-label">محدد المدة</span>
+              <span class="toggle-option-hint">بعدد سنوات محددة</span>
+            </label>
+            <label class="toggle-option" id="toggle-open" onclick="selectContractType('open')">
+              <input type="radio" name="contract_type" value="open">
+              <span class="toggle-option-label">غير محدد المدة</span>
+              <span class="toggle-option-hint">مفتوح المدة</span>
+            </label>
+          </div>
+        </div>
+        <div class="field years-field" id="years-field">
+          <label>عدد سنوات العقد</label>
+          <input type="number" id="f_years" placeholder="مثال: 2" min="1" max="5" step="1" oninput="updatePreview()">
+          <span class="hint">بحد أقصى 5 سنوات ميلادية</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECTION 5: PREVIEW -->
+    <div class="form-section" id="section-preview">
+      <div class="section-header">
+        <div class="section-icon">👁️</div>
+        <h2>معاينة العقد</h2>
+      </div>
+      <div class="preview-wrap">
+        <div class="preview-header">
+          <span>📃 نص العقد — يتحدث تلقائياً عند تعديل الحقول</span>
+          <span style="font-family:'Tajawal',sans-serif;font-size:11px;opacity:0.6;">LIVE PREVIEW</span>
+        </div>
+        <div class="preview-body" id="contract-preview">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+  let contractType = 'fixed';
+
+  function scrollToSection(id) {
+    document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+    event.currentTarget.classList.add('active');
+  }
+
+  function selectContractType(type) {
+    contractType = type;
+    document.getElementById('toggle-fixed').classList.toggle('selected', type === 'fixed');
+    document.getElementById('toggle-open').classList.toggle('selected', type === 'open');
+    document.getElementById('years-field').classList.toggle('hidden', type === 'open');
+    updatePreview();
+  }
+
+  function val(id, placeholder) {
+    const v = document.getElementById(id).value.trim();
+    if (v) return `<span class="field-val">${v}</span>`;
+    return `<span class="field-empty">${placeholder}</span>`;
+  }
+
+  function raw(id) {
+    return document.getElementById(id).value.trim();
+  }
+
+  function fmtDate(id) {
+    const v = raw(id);
+    if (!v) return `<span class="field-empty">التاريخ</span>`;
+    const d = new Date(v);
+    const opts = { year: 'numeric', month: 'long', day: 'numeric' };
+    return `<span class="field-val">${d.toLocaleDateString('ar-KW', opts)}</span>`;
+  }
+
+  function updatePreview() {
+    const location  = val('f_location', 'الموقع');
+    const day       = val('f_day', 'اليوم');
+    const date      = fmtDate('f_date');
+    const company   = val('f_company', 'اسم الشركة');
+    const authName  = val('f_auth_name', 'اسم المفوض');
+    const authCivil = val('f_auth_civil', 'الرقم المدني');
+    const empName   = val('f_emp_name', 'اسم الموظف');
+    const natl      = val('f_nationality', 'الجنسية');
+    const empCivil  = val('f_emp_civil', 'الرقم المدني');
+    const resId     = val('f_res_id', 'رقم الإقامة');
+    const compSpec  = val('f_company_spec', 'مجال العمل');
+    const title     = val('f_title', 'المسمى الوظيفي');
+    const salary    = val('f_salary', 'الراتب');
+    const effDate   = fmtDate('f_effective_date');
+    const years     = val('f_years', 'عدد السنوات');
+
+    const clause6Fixed = `هذا العقد محدد المدة ويبدأ اعتبارا من ${effDate} ولمدة ${years} سنوات، ويجوز تجديد العقد بموافقة الطرفين لمدد مماثلة بحد أقصى خمس سنوات ميلادية.`;
+    const clause6Open  = `هذا العقد غير محدد المدة ويبدأ اعتبارا من ${effDate}.`;
+    const clause6 = contractType === 'fixed' ? clause6Fixed : clause6Open;
+
+    document.getElementById('contract-preview').innerHTML = `
+      <div class="contract-title">
+        <img src="https://erp.kuwaitgroupco.com/files/Public-Authority-of-Manpower1.png" alt="الهيئة العامة للقوى العاملة" style="width:153px;height:auto;margin-bottom:10px;">
+        <h2>نموذج عـقـد عـمـل</h2>
+        <p>في القطاع الأهلي · دولة الكويت</p>
+      </div>
+
+      <div class="contract-meta">
+        الهيئة العامة للقوى العاملة / ${location}
+        &nbsp;&nbsp;|&nbsp;&nbsp;
+        يوم ${day} الموافق ${date}
+      </div>
+
+      <p class="contract-intro">تحرر هذا العقد بين كل من:</p>
+
+      <div class="party-block">
+        <span class="party-tag">الطرف الأول · صاحب العمل</span>
+        <table>
+          <tr><td>الشركة</td><td>${company}</td></tr>
+          <tr><td>المفوض بالتوقيع</td><td>${authName}</td></tr>
+          <tr><td>الرقم المدني</td><td>${authCivil}</td></tr>
+        </table>
+      </div>
+
+      <div class="party-block">
+        <span class="party-tag">الطرف الثاني · الموظف</span>
+        <table>
+          <tr><td>الاسم</td><td>${empName}</td></tr>
+          <tr><td>الجنسية</td><td>${natl}</td></tr>
+          <tr><td>الرقم المدني</td><td>${empCivil}</td></tr>
+          <tr><td>رقم الإقامة</td><td>${resId}</td></tr>
+        </table>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">تمهيد</span></div>
+        <div class="clause-body">
+          يمتلك الطرف الأول منشأة باسم ${company} تعمل في مجال ${compSpec}، ويرغب في التعاقد مع الطرف الثاني للعمل لديه بمهنة ${title}، وبعد أن أقر الطرفان بأهليتهما في إبرام هذا العقد تم الاتفاق على ما يلي:
+        </div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الأول</span></div>
+        <div class="clause-body">يعتبر التمهيد السابق جزءاً لا يتجزأ من هذا العقد.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الثاني</span><span class="clause-name">طبيعة العمل</span></div>
+        <div class="clause-body">تعاقد الطرف الأول مع الطرف الثاني للعمل لديه بمهنة ${title} داخل دولة الكويت.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الثالث</span><span class="clause-name">فترة التجربة</span></div>
+        <div class="clause-body">يخضع الطرف الثاني لفترة تجربة لمدة لا تزيد عن <strong>100 يوم عمل</strong>، ويحق لكل طرف إنهاء العقد خلال تلك الفترة دون إخطار.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الرابع</span><span class="clause-name">قيمة الأجر</span></div>
+        <div class="clause-body">يتقاضى الطرف الثاني عن تنفيذ هذا العقد أجراً مقداره ${salary} دينار يدفع في نهاية كل شهر، ولا يجوز للطرف الأول تخفيض الأجر أثناء سريان هذا العقد.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الخامس</span><span class="clause-name">نفاذ العقد</span></div>
+        <div class="clause-body">يبدأ نفاذ العقد اعتباراً من ${effDate}، ويلتزم الطرف الثاني بالقيام بأداء عمله طوال مدة نفاذه.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند السادس</span><span class="clause-name">مدة العقد</span></div>
+        <div class="clause-body">${clause6}</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند السابع</span><span class="clause-name">الإجازة السنوية</span></div>
+        <div class="clause-body">للطرف الثاني الحق في إجازة سنوية مدفوعة الأجر مدتها <strong>30 يوماً</strong>، ولا يستحقها عن السنة الأولى إلا بعد انقضاء مدة تسعة أشهر تحسب من تاريخ نفاذ العقد.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الثامن</span><span class="clause-name">عدد ساعات العمل</span></div>
+        <div class="clause-body">لا يجوز للطرف الأول تشغيل الطرف الثاني لمدة تزيد عن <strong>ثماني ساعات</strong> يومياً تتخللها فترة راحة لا تقل عن ساعة، باستثناء الحالات المقررة قانوناً.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند التاسع</span><span class="clause-name">قيمة تذكرة السفر</span></div>
+        <div class="clause-body">يتحمل الطرف الأول مصاريف عودة الطرف الثاني إلى بلده عند انتهاء علاقة العمل ومغادرته نهائياً للبلاد.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند العاشر</span><span class="clause-name">التأمين ضد إصابات وأمراض العمل</span></div>
+        <div class="clause-body">يلتزم الطرف الأول بالتأمين على الطرف الثاني ضد إصابات وأمراض العمل، كما يلتزم بقيمة التأمين الصحي طبقاً للقانون رقم (1) لسنة 1999.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الحادي عشر</span><span class="clause-name">مكافأة نهاية الخدمة</span></div>
+        <div class="clause-body">يستحق الطرف الثاني مكافأة نهاية الخدمة المنصوص عليها بالقوانين المنظمة.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الثاني عشر</span><span class="clause-name">القانون الواجب التطبيق</span></div>
+        <div class="clause-body">تسري أحكام قانون العمل في القطاع الأهلي رقم 6 لسنة 2010 والقرارات المنفذة له فيما لم يرد بشأنه نص في هذا العقد.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الثالث عشر</span><span class="clause-name">شروط خاصة</span></div>
+        <div class="clause-body">1: لا يوجد<br>2: لا يوجد</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الرابع عشر</span><span class="clause-name">المحكمة المختصة</span></div>
+        <div class="clause-body">تختص المحكمة الكلية ودوائرها العمالية طبقاً لأحكام القانون رقم 46 لسنة 1987 بنظر كافة المنازعات الناشئة عن تطبيق ومنازعات هذا العقد.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند الخامس عشر</span><span class="clause-name">لغة العقد</span></div>
+        <div class="clause-body">حرر هذا العقد باللغة العربية، ويعتد بنصوص اللغة العربية عند وقوع أي تعارض.</div>
+      </div>
+
+      <div class="clause">
+        <div class="clause-title"><span class="clause-num">البند السادس عشر</span><span class="clause-name">نسخ العقد</span></div>
+        <div class="clause-body">حرر هذا العقد من ثلاث نسخ بيد كل طرف نسخة للعمل بموجبها والثالثة تودع لدى الهيئة العامة للقوى العاملة.</div>
+      </div>
+
+      <div class="signature-row">
+        <div class="sig-party">
+          <p>الطرف الأول</p>
+          <div class="sig-line"></div>
+        </div>
+        <div class="sig-party">
+          <p>الطرف الثاني</p>
+          <div class="sig-line"></div>
+        </div>
+      </div>
+    `;
+  }
+
+  function exportPDF() {
+    // Use browser native print-to-PDF for correct Arabic rendering
+    const title = document.title;
+    document.title = 'عقد-عمل';
+    window.print();
+    document.title = title;
+  }
+
+  // Initialize preview on load
+  document.addEventListener('DOMContentLoaded', function() {
+      updatePreview();
+  });
+</script>
+<div class="print-page-footer" style="display:none;"></div>
+</body>
+</html>

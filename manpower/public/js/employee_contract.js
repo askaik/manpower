@@ -28,7 +28,8 @@ frappe.ui.form.on('Employee', {
                         location: values.location,
                         contract_date: values.contract_date
                     }).toString();
-                    window.open('/app/employment-contract?' + params, '_blank');
+                    // Open the public Web Page mapped by the www/ directory
+                    window.open('/employment_contract?' + params, '_blank');
                 }
             });
             d.show();
