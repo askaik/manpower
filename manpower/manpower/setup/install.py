@@ -24,14 +24,14 @@ def after_migrate():
             ),
             dict(
                 fieldname='custom_nationality',
-                label='Nationality',
+                label='الجنسية',
                 fieldtype='Link',
                 options='Country',
                 insert_after='custom_arabic_title'
             ),
             dict(
                 fieldname='custom_civil_id',
-                label='Civil ID',
+                label='الرقم المدني',
                 fieldtype='Data',
                 insert_after='custom_nationality'
             )

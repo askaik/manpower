@@ -704,15 +704,15 @@
       <div class="form-grid">
         <div class="field span-2">
           <label>اسم الشركة <span class="req">·</span></label>
-          <input type="text" id="f_company" placeholder="الاسم الرسمي للشركة" value="{{ company.company_name if company else '' }}" oninput="updatePreview()">
+          <input type="text" id="f_company" placeholder="الاسم الرسمي للشركة" value="{{ arabic_company_name or company.company_name if company else '' }}" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>اسم المفوض بالتوقيع</label>
-          <input type="text" id="f_auth_name" placeholder="الاسم الكامل" value="{{ company.custom_auth_name if company else '' }}" oninput="updatePreview()">
+          <input type="text" id="f_auth_name" placeholder="الاسم الكامل" value="{{ auth_name if auth_name else '' }}" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الرقم المدني للمفوض</label>
-          <input type="text" id="f_auth_civil" placeholder="12 رقماً" oninput="updatePreview()">
+          <input type="text" id="f_auth_civil" placeholder="12 رقماً" value="{{ auth_civil if auth_civil else '' }}" oninput="updatePreview()">
         </div>
         <div class="field span-2">
           <label>مجال عمل الشركة <span class="req">·</span></label>
@@ -734,15 +734,11 @@
         </div>
         <div class="field">
           <label>الجنسية</label>
-          <input type="text" id="f_nationality" placeholder="مثال: مصرية، هندية..." value="{{ emp.custom_nationality if emp else '' }}" oninput="updatePreview()">
+          <input type="text" id="f_nationality" placeholder="مثال: مصرية، هندية..." value="{{ nationality_ar or '' }}" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الرقم المدني</label>
           <input type="text" id="f_emp_civil" placeholder="12 رقماً" value="{{ emp.custom_civil_id if emp else '' }}" oninput="updatePreview()">
-        </div>
-        <div class="field">
-          <label>رقم الإقامة</label>
-          <input type="text" id="f_res_id" placeholder="رقم الإقامة" oninput="updatePreview()">
         </div>
       </div>
     </div>
