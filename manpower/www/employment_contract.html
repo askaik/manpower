@@ -682,15 +682,22 @@
       <div class="form-grid cols-3">
         <div class="field">
           <label>الموقع / المنطقة <span class="req">·</span></label>
-          <input type="text" id="f_location" placeholder="مثال: العاصمة" value="{{ location }}" oninput="updatePreview()">
+          <select id="f_location" name="location" onchange="updatePreview()">
+            <option value="العاصمة" {% if location == 'العاصمة' %}selected{% endif %}>العاصمة</option>
+            <option value="حولي" {% if location == 'حولي' %}selected{% endif %}>حولي</option>
+            <option value="الفروانية" {% if location == 'الفروانية' %}selected{% endif %}>الفروانية</option>
+            <option value="الجهراء" {% if location == 'الجهراء' %}selected{% endif %}>الجهراء</option>
+            <option value="الأحمدي" {% if location == 'الأحمدي' %}selected{% endif %}>الأحمدي</option>
+            <option value="مبارك الكبير" {% if location == 'مبارك الكبير' %}selected{% endif %}>مبارك الكبير</option>
+          </select>
         </div>
         <div class="field">
           <label>اليوم</label>
-          <input type="text" id="f_day" placeholder="مثال: الأحد" oninput="updatePreview()">
+          <input type="text" id="f_day" placeholder="يتم تعبئته تلقائياً" readonly style="background:#f0f4f8;cursor:not-allowed;" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>التاريخ</label>
-          <input type="date" id="f_date" value="{{ contract_date }}" oninput="updatePreview()">
+          <input type="date" id="f_date" value="{{ contract_date }}" oninput="autoFillDay(); updatePreview()">
         </div>
       </div>
     </div>
@@ -734,7 +741,10 @@
         </div>
         <div class="field">
           <label>الجنسية</label>
-          <input type="text" id="f_nationality" placeholder="مثال: مصرية، هندية..." value="{{ nationality_ar or '' }}" oninput="updatePreview()">
+          <select id="f_nationality" onchange="updatePreview()">
+            <option value="">اختر الجنسية...</option>
+          </select>
+          <input type="hidden" id="initial_nationality" value="{{ nationality_ar or '' }}">
         </div>
         <div class="field">
           <label>الرقم المدني</label>
@@ -812,6 +822,15 @@
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
     event.currentTarget.classList.add('active');
+  }
+
+  function autoFillDay() {
+    const dateVal = document.getElementById('f_date').value;
+    const dayInput = document.getElementById('f_day');
+    if (!dateVal) { dayInput.value = ''; return; }
+    const arabicDays = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+    const d = new Date(dateVal + 'T00:00:00');
+    dayInput.value = arabicDays[d.getDay()];
   }
 
   function selectContractType(type) {
@@ -996,14 +1015,31 @@
   function exportPDF() {
     // Use browser native print-to-PDF for correct Arabic rendering
     const title = document.title;
+    printWin.document.title = title;
     document.title = 'عقد-عمل';
     window.print();
     document.title = title;
   }
 
-  // Initialize preview on load
   document.addEventListener('DOMContentLoaded', function() {
-      updatePreview();
+    const nationalities = ['الكويت','مصر','السعودية','الإمارات','عمان','البحرين','قطر','اليمن','الأردن','فلسطين','سوريا','لبنان','العراق','السودان','ليبيا','تونس','الجزائر','المغرب','موريتانيا','الصومال','جيبوتي','الهند','باكستان','بنغلاديش','الفلبين','سريلانكا','نيبال','إندونيسيا','أخرى'];
+    const natSelect = document.getElementById('f_nationality');
+    const initNatEl = document.getElementById('initial_nationality');
+    const initNat = initNatEl ? initNatEl.value : '';
+    
+    nationalities.forEach(n => {
+      let opt = document.createElement('option');
+      opt.value = n;
+      opt.textContent = n;
+      if (n === initNat || (initNat.includes('Palestin') && n === 'فلسطين')) opt.selected = true;
+      natSelect.appendChild(opt);
+    });
+
+    // Handle date field on load if preset
+    if(document.getElementById('f_date').value) {
+      autoFillDay();
+    }
+    updatePreview();
   });
 </script>
 <div class="print-page-footer" style="display:none;"></div>

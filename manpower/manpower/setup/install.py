@@ -25,8 +25,8 @@ def after_migrate():
             dict(
                 fieldname='custom_nationality',
                 label='الجنسية',
-                fieldtype='Link',
-                options='Country',
+                fieldtype='Select',
+                options='الكويت\nمصر\nالسعودية\nالإمارات\nعمان\nالبحرين\nقطر\nاليمن\nالأردن\nفلسطين\nسوريا\nلبنان\nالعراق\nالسودان\nليبيا\nتونس\nالجزائر\nالمغرب\nموريتانيا\nالصومال\nجيبوتي\nالهند\nباكستان\nبنغلاديش\nالفلبين\nسريلانكا\nنيبال\nإندونيسيا\nأخرى',
                 insert_after='custom_arabic_title'
             ),
             dict(
