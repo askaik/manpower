@@ -84,7 +84,7 @@
     font-family: 'Tajawal', sans-serif;
   }
 
-  nav a {
+  .manpower-contract-wrapper nav a {
     display: flex;
     align-items: center;
     gap: 10px;
@@ -98,8 +98,8 @@
     font-family: 'Tajawal', sans-serif;
     cursor: pointer;
   }
-  nav a:hover { color: #fff !important; background: rgba(255,255,255,0.05); border-right-color: var(--sidebar-active); }
-  nav a.active { color: #fff !important; background: rgba(44,125,165,0.15); border-right-color: var(--sidebar-active); }
+  .manpower-contract-wrapper nav a:hover { color: #fff !important; background: rgba(255,255,255,0.05); border-right-color: var(--sidebar-active); }
+  .manpower-contract-wrapper nav a.active { color: #fff !important; background: rgba(44,125,165,0.15); border-right-color: var(--sidebar-active); }
   .nav-icon { width: 18px; text-align: center; font-size: 14px; opacity: 1 !important; color: #d8e8f4 !important; }
 
   .sidebar-footer {
@@ -272,7 +272,7 @@
     justify-content: space-between;
   }
   .preview-header span { color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 600; font-family: 'Tajawal', sans-serif; }
-  .preview-.manpower-contract-wrapper {
+  .preview-body {
     padding: 36px 40px;
     direction: rtl;
     text-align: right;
@@ -393,7 +393,7 @@
     font-family: 'Tajawal', sans-serif;
     vertical-align: middle;
   }
-  .clause-.manpower-contract-wrapper {
+  .clause-body {
     font-size: 13.5px;
     line-height: 1.9;
     color: var(--text);
@@ -439,7 +439,7 @@
   @media print {
     * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
 
-    aside, .hero, .section-header, .preview-header,
+    .manpower-contract-wrapper aside, .hero, .section-header, .preview-header,
     #section-header, #section-firstparty, #section-secondparty, #section-terms {
       display: none !important;
     }
@@ -477,7 +477,7 @@
       margin: 0 !important;
     }
 
-    .preview-.manpower-contract-wrapper {
+    .preview-body {
       max-height: none !important;
       overflow: visible !important;
       padding: 0 !important;
@@ -605,17 +605,16 @@
   }
 
   /* ── ERPNEXT COLOR OVERRIDES ── */
-  aside a, aside a:visited, aside a:hover, aside a:active,
-  aside nav a, aside nav a:visited {
+  .manpower-contract-wrapper aside a, .manpower-contract-wrapper aside a:visited, .manpower-contract-wrapper aside a:hover, .manpower-contract-wrapper aside a:active,
+  .manpower-contract-wrapper aside .manpower-contract-wrapper nav a, .manpower-contract-wrapper aside .manpower-contract-wrapper nav a:visited {
     color: #d8e8f4 !important;
     text-decoration: none !important;
   }
-  aside nav a:hover, aside nav a.active {
+  .manpower-contract-wrapper aside .manpower-contract-wrapper nav a:hover, .manpower-contract-wrapper aside .manpower-contract-wrapper nav a.active {
     color: #ffffff !important;
   }
-  aside * { box-sizing: border-box; }
+  .manpower-contract-wrapper aside * { box-sizing: border-box; }
 </style>
-
 <div class="app">
 
   <!-- SIDEBAR -->
@@ -630,20 +629,20 @@
     </div>
     <nav>
       <div class="nav-section-label">أقسام النموذج</div>
-      <a onclick="customScrollTo('section-header')" class="active">
+      <a onclick="scrollTo('section-header')" class="active">
         <span class="nav-icon">📄</span> بيانات العقد
       </a>
-      <a onclick="customScrollTo('section-firstparty')">
+      <a onclick="scrollTo('section-firstparty')">
         <span class="nav-icon">🏢</span> الطرف الأول (الشركة)
       </a>
-      <a onclick="customScrollTo('section-secondparty')">
+      <a onclick="scrollTo('section-secondparty')">
         <span class="nav-icon">👤</span> الطرف الثاني (الموظف)
       </a>
-      <a onclick="customScrollTo('section-terms')">
+      <a onclick="scrollTo('section-terms')">
         <span class="nav-icon">📋</span> شروط العقد
       </a>
       <div class="nav-section-label" style="margin-top:8px;">معاينة</div>
-      <a onclick="customScrollTo('section-preview')">
+      <a onclick="scrollTo('section-preview')">
         <span class="nav-icon">👁️</span> معاينة العقد
       </a>
     </nav>
@@ -798,11 +797,4 @@
 
   </main>
 </div>
-
-
-<!-- Scripts moved to controller -->
-
-<div class="print-page-footer" style="display:none;"></div>
-
-
 </div>

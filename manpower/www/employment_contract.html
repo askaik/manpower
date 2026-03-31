@@ -628,7 +628,7 @@
   <aside>
     <div class="sidebar-logo">
       <div style="text-align:center;margin-bottom:12px;">
-        <img src="https://erp.kuwaitgroupco.com/files/Public-Authority-of-Manpower1.png" alt="الهيئة العامة للقوى العاملة" style="width:376px;height:auto;filter:brightness(0) invert(1);opacity:0.9;">
+        <img src="Public-Authority-of-Manpower1.png" alt="الهيئة العامة للقوى العاملة" style="width:376px;height:auto;filter:brightness(0) invert(1);opacity:0.9;">
       </div>
       <div class="wiki-badge">KPG</div>
       <h2>نموذج عقد العمل</h2>
@@ -636,20 +636,20 @@
     </div>
     <nav>
       <div class="nav-section-label">أقسام النموذج</div>
-      <a onclick="scrollToSection('section-header')" class="active">
+      <a onclick="scrollTo('section-header')" class="active">
         <span class="nav-icon">📄</span> بيانات العقد
       </a>
-      <a onclick="scrollToSection('section-firstparty')">
+      <a onclick="scrollTo('section-firstparty')">
         <span class="nav-icon">🏢</span> الطرف الأول (الشركة)
       </a>
-      <a onclick="scrollToSection('section-secondparty')">
+      <a onclick="scrollTo('section-secondparty')">
         <span class="nav-icon">👤</span> الطرف الثاني (الموظف)
       </a>
-      <a onclick="scrollToSection('section-terms')">
+      <a onclick="scrollTo('section-terms')">
         <span class="nav-icon">📋</span> شروط العقد
       </a>
       <div class="nav-section-label" style="margin-top:8px;">معاينة</div>
-      <a onclick="scrollToSection('section-preview')">
+      <a onclick="scrollTo('section-preview')">
         <span class="nav-icon">👁️</span> معاينة العقد
       </a>
     </nav>
@@ -682,22 +682,15 @@
       <div class="form-grid cols-3">
         <div class="field">
           <label>الموقع / المنطقة <span class="req">·</span></label>
-          <select id="f_location" name="location" onchange="updatePreview()">
-            <option value="العاصمة" {% if location == 'العاصمة' %}selected{% endif %}>العاصمة</option>
-            <option value="حولي" {% if location == 'حولي' %}selected{% endif %}>حولي</option>
-            <option value="الفروانية" {% if location == 'الفروانية' %}selected{% endif %}>الفروانية</option>
-            <option value="الجهراء" {% if location == 'الجهراء' %}selected{% endif %}>الجهراء</option>
-            <option value="الأحمدي" {% if location == 'الأحمدي' %}selected{% endif %}>الأحمدي</option>
-            <option value="مبارك الكبير" {% if location == 'مبارك الكبير' %}selected{% endif %}>مبارك الكبير</option>
-          </select>
+          <input type="text" id="f_location" placeholder="مثال: العاصمة" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>اليوم</label>
-          <input type="text" id="f_day" placeholder="يتم تعبئته تلقائياً" readonly style="background:#f0f4f8;cursor:not-allowed;" oninput="updatePreview()">
+          <input type="text" id="f_day" placeholder="يتم تعبئته تلقائياً" readonly style="background:#f0f4f8;cursor:not-allowed;">
         </div>
         <div class="field">
           <label>التاريخ</label>
-          <input type="date" id="f_date" value="{{ contract_date }}" oninput="autoFillDay(); updatePreview()">
+          <input type="date" id="f_date" oninput="autoFillDay(); updatePreview()">
         </div>
       </div>
     </div>
@@ -711,19 +704,19 @@
       <div class="form-grid">
         <div class="field span-2">
           <label>اسم الشركة <span class="req">·</span></label>
-          <input type="text" id="f_company" placeholder="الاسم الرسمي للشركة" value="{{ arabic_company_name or company.company_name if company else '' }}" oninput="updatePreview()">
+          <input type="text" id="f_company" placeholder="الاسم الرسمي للشركة" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>اسم المفوض بالتوقيع</label>
-          <input type="text" id="f_auth_name" placeholder="الاسم الكامل" value="{{ auth_name if auth_name else '' }}" oninput="updatePreview()">
+          <input type="text" id="f_auth_name" placeholder="الاسم الكامل" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الرقم المدني للمفوض</label>
-          <input type="text" id="f_auth_civil" placeholder="12 رقماً" value="{{ auth_civil if auth_civil else '' }}" oninput="updatePreview()">
+          <input type="text" id="f_auth_civil" placeholder="12 رقماً" oninput="updatePreview()">
         </div>
         <div class="field span-2">
           <label>مجال عمل الشركة <span class="req">·</span></label>
-          <input type="text" id="f_company_spec" placeholder="مثال: تجارة التجزئة، الخدمات المالية..." value="{{ company.custom_specialization_ if company else '' }}" oninput="updatePreview()">
+          <input type="text" id="f_company_spec" placeholder="مثال: تجارة التجزئة، الخدمات المالية..." oninput="updatePreview()">
         </div>
       </div>
     </div>
@@ -737,18 +730,15 @@
       <div class="form-grid">
         <div class="field span-2">
           <label>الاسم الكامل للموظف <span class="req">·</span></label>
-          <input type="text" id="f_emp_name" placeholder="الاسم الكامل" value="{{ emp.custom_arabic_name if emp and emp.custom_arabic_name else (emp.employee_name if emp else '') }}" oninput="updatePreview()">
+          <input type="text" id="f_emp_name" placeholder="الاسم الكامل" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الجنسية</label>
-          <select id="f_nationality" onchange="updatePreview()">
-            <option value="">اختر الجنسية...</option>
-          </select>
-          <input type="hidden" id="initial_nationality" value="{{ nationality_ar or '' }}">
+          <input type="text" id="f_nationality" placeholder="مثال: مصرية، هندية..." oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الرقم المدني</label>
-          <input type="text" id="f_emp_civil" placeholder="12 رقماً" value="{{ emp.custom_civil_id if emp else '' }}" oninput="updatePreview()">
+          <input type="text" id="f_emp_civil" placeholder="12 رقماً" oninput="updatePreview()">
         </div>
       </div>
     </div>
@@ -762,7 +752,7 @@
       <div class="form-grid">
         <div class="field span-2">
           <label>المسمى الوظيفي <span class="req">·</span></label>
-          <input type="text" id="f_title" placeholder="مثال: محاسب، مهندس، مبرمج..." value="{{ emp.custom_arabic_title if emp and emp.custom_arabic_title else (emp.designation if emp else '') }}" oninput="updatePreview()">
+          <input type="text" id="f_title" placeholder="مثال: محاسب، مهندس، مبرمج..." oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الراتب الشهري (دينار كويتي) <span class="req">·</span></label>
@@ -770,7 +760,7 @@
         </div>
         <div class="field">
           <label>تاريخ بدء نفاذ العقد <span class="req">·</span></label>
-          <input type="date" id="f_effective_date" value="{{ contract_date }}" oninput="updatePreview()">
+          <input type="date" id="f_effective_date" oninput="updatePreview()">
         </div>
         <div class="field span-2">
           <label>نوع العقد</label>
@@ -818,10 +808,18 @@
 <script>
   let contractType = 'fixed';
 
-  function scrollToSection(id) {
+  function scrollTo(id) {
     document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
     document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
     event.currentTarget.classList.add('active');
+  }
+
+  function selectContractType(type) {
+    contractType = type;
+    document.getElementById('toggle-fixed').classList.toggle('selected', type === 'fixed');
+    document.getElementById('toggle-open').classList.toggle('selected', type === 'open');
+    document.getElementById('years-field').classList.toggle('hidden', type === 'open');
+    updatePreview();
   }
 
   function autoFillDay() {
@@ -831,14 +829,6 @@
     const arabicDays = ['الأحد', 'الاثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
     const d = new Date(dateVal + 'T00:00:00');
     dayInput.value = arabicDays[d.getDay()];
-  }
-
-  function selectContractType(type) {
-    contractType = type;
-    document.getElementById('toggle-fixed').classList.toggle('selected', type === 'fixed');
-    document.getElementById('toggle-open').classList.toggle('selected', type === 'open');
-    document.getElementById('years-field').classList.toggle('hidden', type === 'open');
-    updatePreview();
   }
 
   function val(id, placeholder) {
@@ -881,7 +871,7 @@
 
     document.getElementById('contract-preview').innerHTML = `
       <div class="contract-title">
-        <img src="https://erp.kuwaitgroupco.com/files/Public-Authority-of-Manpower1.png" alt="الهيئة العامة للقوى العاملة" style="width:153px;height:auto;margin-bottom:10px;">
+        <img src="Public-Authority-of-Manpower1.png" alt="الهيئة العامة للقوى العاملة" style="width:153px;height:auto;margin-bottom:10px;">
         <h2>نموذج عـقـد عـمـل</h2>
         <p>في القطاع الأهلي · دولة الكويت</p>
       </div>
@@ -986,7 +976,7 @@
 
       <div class="clause">
         <div class="clause-title"><span class="clause-num">البند الرابع عشر</span><span class="clause-name">المحكمة المختصة</span></div>
-        <div class="clause-body">تختص المحكمة الكلية ودوائرها العمالية طبقاً لأحكام القانون رقم 46 لسنة 1987 بنظر كافة المنازعات الناشئة عن تطبيق ومنازعات هذا العقد.</div>
+        <div class="clause-body">تختص المحكمة الكلية ودوائرها العمالية طبقاً لأحكام القانون رقم 46 لسنة 1987 بنظر كافة المنازعات الناشئة عن تطبيق أو تفسير هذا العقد.</div>
       </div>
 
       <div class="clause">
@@ -1012,35 +1002,180 @@
     `;
   }
 
+
   function exportPDF() {
-    // Use browser native print-to-PDF for correct Arabic rendering
-    const title = document.title;
-    printWin.document.title = title;
-    document.title = 'عقد-عمل';
-    window.print();
-    document.title = title;
+    // Open a clean window with only the contract content — avoids ERPNext wrapper interference
+    const content = document.getElementById('contract-preview').innerHTML;
+    const printWin = window.open('', '_blank');
+    printWin.document.write(`<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>عقد-عمل</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  @page {
+    size: A4;
+    margin: 15mm;
+    @bottom-center {
+      content: counter(page);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 10pt;
+      color: #5a7080;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    color: #1a2a3a;
+    background: #fff;
+    padding: 0;
+    line-height: 1.9;
+    font-size: 12pt;
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const nationalities = ['الكويت','مصر','السعودية','الإمارات','عمان','البحرين','قطر','اليمن','الأردن','فلسطين','سوريا','لبنان','العراق','السودان','ليبيا','تونس','الجزائر','المغرب','موريتانيا','الصومال','جيبوتي','الهند','باكستان','بنغلاديش','الفلبين','سريلانكا','نيبال','إندونيسيا','أخرى'];
-    const natSelect = document.getElementById('f_nationality');
-    const initNatEl = document.getElementById('initial_nationality');
-    const initNat = initNatEl ? initNatEl.value : '';
-    
-    nationalities.forEach(n => {
-      let opt = document.createElement('option');
-      opt.value = n;
-      opt.textContent = n;
-      if (n === initNat || (initNat.includes('Palestin') && n === 'فلسطين')) opt.selected = true;
-      natSelect.appendChild(opt);
-    });
+  /* Header */
+  .contract-title {
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .contract-title img {
+    display: block;
+    margin: 0 auto 2px;
+    width: 150px;
+    height: auto;
+  }
+  .contract-title h2 {
+    font-size: 18pt;
+    font-weight: 700;
+    color: #0E2841;
+    margin-top: 2px;
+  }
+  .contract-title p {
+    font-size: 11pt;
+    font-weight: 500;
+    color: #5a7080;
+  }
 
-    // Handle date field on load if preset
-    if(document.getElementById('f_date').value) {
-      autoFillDay();
-    }
-    updatePreview();
-  });
+  /* Meta line */
+  .contract-meta {
+    text-align: center;
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 10pt;
+    color: #5a7080;
+  }
+
+  /* Intro */
+  .contract-intro {
+    margin: 16px 0;
+    font-size: 11pt;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  /* Party blocks */
+  .party-block {
+    background: #f7f8fa;
+    border-radius: 6px;
+    padding: 0 20px 14px 20px;
+    margin: 10px 0;
+    border-right: 3px solid #2C7DA5;
+    border-left: 3px solid #2C7DA5;
+    overflow: hidden;
+  }
+  .party-block .party-tag {
+    display: block;
+    text-align: center;
+    background: #2C7DA5;
+    color: #fff;
+    font-size: 10pt;
+    font-weight: 700;
+    padding: 4px 10px;
+    margin: 0 -20px 10px -20px;
+    border-radius: 0;
+  }
+  .party-block table { width: 100%; border-collapse: collapse; }
+  .party-block td { padding: 5px 0; font-size: 10.5pt; text-align: right; }
+  .party-block td:first-child { font-weight: 700; width: 160px; color: #0E2841; }
+  .party-block td:last-child { color: #5a7080; }
+
+  /* Clauses */
+  .clause {
+    margin: 16px 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .clause-title {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0E2841;
+    margin-bottom: 4px;
+    text-align: right;
+    line-height: 2;
+  }
+  .clause-num {
+    display: inline-block;
+    background: #0E2841;
+    color: #fff;
+    font-size: 9pt;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    vertical-align: middle;
+    line-height: 1.6;
+  }
+  .clause-name {
+    display: inline;
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0E2841;
+    padding-right: 14px;
+    margin-right: 8px;
+    border-right: 2px solid rgba(44,125,165,0.35);
+    vertical-align: middle;
+  }
+  .clause-body {
+    font-size: 10.5pt;
+    line-height: 1.9;
+    color: #1a2a3a;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .field-val { color: #2C7DA5; font-weight: 700; }
+  .field-empty { color: #ccc; font-weight: 400; font-style: italic; font-size: 9pt; }
+
+  /* Signatures */
+  .signature-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding-top: 20px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .sig-party { text-align: center; width: 40%; }
+  .sig-party p { font-size: 11pt; font-weight: 700; color: #0E2841; margin-bottom: 50px; }
+  .sig-line { border-bottom: 1px solid #1a2a3a; width: 160px; margin: 0 auto; }
+</style>
+</head>
+<body>
+${content}
+</body>
+</html>`);
+    printWin.document.close();
+    // Wait for fonts to load, then print
+    printWin.onload = function() {
+      setTimeout(function() {
+        printWin.print();
+      }, 400);
+    };
+  }
+
+  // Initialize preview on load
+  updatePreview();
 </script>
 <div class="print-page-footer" style="display:none;"></div>
 </body>
