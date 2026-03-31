@@ -14,6 +14,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     let employee_id = route_options.employee_id || urlParams.get('employee_id');
     let location = route_options.location || urlParams.get('location');
     let contract_date = route_options.contract_date || urlParams.get('contract_date');
+    let selected_auth = route_options.auth_name || urlParams.get('auth_name') || '';
 
     if(!employee_id) {
         frappe.msgprint(__('Please access this page directly from an Employee profile to generate the contract.'));
@@ -29,25 +30,37 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
         callback: function(r) {
             if(r.message) {
                 let emp = r.message;
-                populateContract(emp, location, contract_date);
+                if(emp.company) {
+                    frappe.call({
+                        method: "frappe.client.get",
+                        args: { doctype: "Company", name: emp.company },
+                        callback: function(rc) {
+                            populateContract(emp, rc.message || {}, location, contract_date, selected_auth);
+                        }
+                    });
+                } else {
+                    populateContract(emp, {}, location, contract_date, selected_auth);
+                }
             }
         }
     });
 
-    function populateContract(emp, location, contract_date) {
+    function populateContract(emp, company, location, contract_date, selected_auth) {
         let auth = null;
-        if(emp.custom_auth_name && emp.custom_auth_name.length > 0) {
-            auth = emp.custom_auth_name[0];
+        if(company.custom_auth_name && company.custom_auth_name.length > 0) {
+            auth = selected_auth
+                ? (company.custom_auth_name.find(a => a.name1 === selected_auth) || company.custom_auth_name[0])
+                : company.custom_auth_name[0];
         }
 
         let $wrap = $(wrapper);
         $wrap.find('#f_location').val(location || '');
         $wrap.find('#f_date').val(contract_date || '');
-        
+
         $wrap.find('#f_company').val(auth ? auth.arabic_company_name : '');
         $wrap.find('#f_auth_name').val(auth ? auth.name1 : '');
         $wrap.find('#f_auth_civil').val(auth ? auth.civil_id : '');
-        $wrap.find('#f_company_spec').val(auth ? auth.custom_specialization_ : '');
+        $wrap.find('#f_company_spec').val(company.custom_specialization_ || '');
 
         $wrap.find('#f_emp_name').val(emp.custom_arabic_name || emp.employee_name || '');
         $wrap.find('#f_nationality').val(emp.custom_nationality || '');
