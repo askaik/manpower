@@ -707,19 +707,19 @@
       <div class="form-grid">
         <div class="field span-2">
           <label>اسم الشركة <span class="req">·</span></label>
-          <input type="text" id="f_company" placeholder="الاسم الرسمي للشركة" oninput="updatePreview()">
+          <input type="text" id="f_company" placeholder="الاسم الرسمي للشركة" value="{{ val_company_name }}" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>اسم المفوض بالتوقيع</label>
-          <input type="text" id="f_auth_name" placeholder="الاسم الكامل" oninput="updatePreview()">
+          <input type="text" id="f_auth_name" placeholder="الاسم الكامل" value="{{ val_auth_name }}" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الرقم المدني للمفوض</label>
-          <input type="text" id="f_auth_civil" placeholder="12 رقماً" oninput="updatePreview()">
+          <input type="text" id="f_auth_civil" placeholder="12 رقماً" value="{{ val_auth_civil }}" oninput="updatePreview()">
         </div>
         <div class="field span-2">
           <label>مجال عمل الشركة <span class="req">·</span></label>
-          <input type="text" id="f_company_spec" placeholder="مثال: تجارة التجزئة، الخدمات المالية..." oninput="updatePreview()">
+          <input type="text" id="f_company_spec" placeholder="مثال: تجارة التجزئة، الخدمات المالية..." value="{{ val_company_spec }}" oninput="updatePreview()">
         </div>
       </div>
     </div>
@@ -733,15 +733,15 @@
       <div class="form-grid">
         <div class="field span-2">
           <label>الاسم الكامل للموظف <span class="req">·</span></label>
-          <input type="text" id="f_emp_name" placeholder="الاسم الكامل" oninput="updatePreview()">
+          <input type="text" id="f_emp_name" placeholder="الاسم الكامل" value="{{ val_emp_name }}" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الجنسية</label>
-          <input type="text" id="f_nationality" placeholder="مثال: مصرية، هندية..." oninput="updatePreview()">
+          <input type="text" id="f_nationality" placeholder="مثال: مصرية، هندية..." value="{{ val_nationality }}" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الرقم المدني</label>
-          <input type="text" id="f_emp_civil" placeholder="12 رقماً" oninput="updatePreview()">
+          <input type="text" id="f_emp_civil" placeholder="12 رقماً" value="{{ val_emp_civil }}" oninput="updatePreview()">
         </div>
       </div>
     </div>
@@ -755,7 +755,7 @@
       <div class="form-grid">
         <div class="field span-2">
           <label>المسمى الوظيفي <span class="req">·</span></label>
-          <input type="text" id="f_title" placeholder="مثال: محاسب، مهندس، مبرمج..." oninput="updatePreview()">
+          <input type="text" id="f_title" placeholder="مثال: محاسب، مهندس، مبرمج..." value="{{ val_title }}" oninput="updatePreview()">
         </div>
         <div class="field">
           <label>الراتب الشهري (دينار كويتي) <span class="req">·</span></label>
@@ -763,7 +763,7 @@
         </div>
         <div class="field">
           <label>تاريخ بدء نفاذ العقد <span class="req">·</span></label>
-          <input type="date" id="f_effective_date" oninput="updatePreview()">
+          <input type="date" id="f_effective_date" value="{{ contract_date }}" oninput="updatePreview()">
         </div>
         <div class="field span-2">
           <label>نوع العقد</label>
