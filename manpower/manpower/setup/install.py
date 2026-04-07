@@ -50,6 +50,12 @@ def after_migrate():
                 insert_after='custom_manpower'
             ),
             dict(
+                fieldname='custom_contract_logo',
+                label='Contract Logo',
+                fieldtype='Attach Image',
+                insert_after='custom_manpower'
+            ),
+            dict(
                 fieldname='custom_specialization_',
                 label='Company Specialization (Arabic)',
                 fieldtype='Data',

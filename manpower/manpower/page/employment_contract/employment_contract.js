@@ -14,6 +14,7 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     let employee_id = route_options.employee_id || urlParams.get('employee_id');
     let location = route_options.location || urlParams.get('location');
     let contract_date = route_options.contract_date || urlParams.get('contract_date');
+    let selected_auth = route_options.auth_name || urlParams.get('auth_name') || '';
 
     if(!employee_id) {
         frappe.msgprint(__('Please access this page directly from an Employee profile to generate the contract.'));
@@ -29,42 +30,37 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
         callback: function(r) {
             if(r.message) {
                 let emp = r.message;
-                // Fetch Company doc to get the contract logo
-                if (emp.company) {
+                if(emp.company) {
                     frappe.call({
                         method: "frappe.client.get",
-                        args: {
-                            doctype: "Company",
-                            name: emp.company
-                        },
-                        callback: function(cr) {
-                            if (cr.message) {
-                                window._contractLogo = cr.message.custom_contract_logo || '';
-                            }
-                            populateContract(emp, location, contract_date);
+                        args: { doctype: "Company", name: emp.company },
+                        callback: function(rc) {
+                            populateContract(emp, rc.message || {}, location, contract_date, selected_auth);
                         }
                     });
                 } else {
-                    populateContract(emp, location, contract_date);
+                    populateContract(emp, {}, location, contract_date, selected_auth);
                 }
             }
         }
     });
 
-    function populateContract(emp, location, contract_date) {
+    function populateContract(emp, company, location, contract_date, selected_auth) {
         let auth = null;
-        if(emp.custom_auth_name && emp.custom_auth_name.length > 0) {
-            auth = emp.custom_auth_name[0];
+        if(company.custom_auth_name && company.custom_auth_name.length > 0) {
+            auth = selected_auth
+                ? (company.custom_auth_name.find(a => a.name1 === selected_auth) || company.custom_auth_name[0])
+                : company.custom_auth_name[0];
         }
 
         let $wrap = $(wrapper);
         $wrap.find('#f_location').val(location || '');
         $wrap.find('#f_date').val(contract_date || '');
-        
+
         $wrap.find('#f_company').val(auth ? auth.arabic_company_name : '');
         $wrap.find('#f_auth_name').val(auth ? auth.name1 : '');
         $wrap.find('#f_auth_civil').val(auth ? auth.civil_id : '');
-        $wrap.find('#f_company_spec').val(auth ? auth.custom_specialization_ : '');
+        $wrap.find('#f_company_spec').val(company.custom_specialization_ || '');
 
         $wrap.find('#f_emp_name').val(emp.custom_arabic_name || emp.employee_name || '');
         $wrap.find('#f_nationality').val(emp.custom_nationality || '');
@@ -146,15 +142,172 @@ frappe.pages['employment-contract'].on_page_load = function(wrapper) {
     const clause6Open  = "هذا العقد غير محدد المدة ويبدأ اعتبارا من " + effDate + ".";
     const clause6 = contractType === 'fixed' ? clause6Fixed : clause6Open;
 
-    document.getElementById('contract-preview').innerHTML = "\n      <div class=\"contract-title\">\n        " + (window._contractLogo ? '<img src="' + window._contractLogo + '" alt="الهيئة العامة للقوى العاملة" style="width:153px;height:auto;margin-bottom:10px;">' : '') + "\n        <h2>نموذج عـقـد عـمـل</h2>\n        <p>في القطاع الأهلي · دولة الكويت</p>\n      </div>\n\n      <div class=\"contract-meta\">\n        الهيئة العامة للقوى العاملة / " + location + "\n        &nbsp;&nbsp;|&nbsp;&nbsp;\n        يوم " + day + " الموافق " + date + "\n      </div>\n\n      <p class=\"contract-intro\">تحرر هذا العقد بين كل من:</p>\n\n      <div class=\"party-block\">\n        <span class=\"party-tag\">الطرف الأول · صاحب العمل</span>\n        <table>\n          <tr><td>الشركة</td><td>" + company + "</td></tr>\n          <tr><td>المفوض بالتوقيع</td><td>" + authName + "</td></tr>\n          <tr><td>الرقم المدني</td><td>" + authCivil + "</td></tr>\n        </table>\n      </div>\n\n      <div class=\"party-block\">\n        <span class=\"party-tag\">الطرف الثاني · الموظف</span>\n        <table>\n          <tr><td>الاسم</td><td>" + empName + "</td></tr>\n          <tr><td>الجنسية</td><td>" + natl + "</td></tr>\n          <tr><td>الرقم المدني</td><td>" + empCivil + "</td></tr>\n        </table>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">تمهيد</span></div>\n        <div class=\"clause-body\">\n          يمتلك الطرف الأول منشأة باسم " + company + " تعمل في مجال " + compSpec + "، ويرغب في التعاقد مع الطرف الثاني للعمل لديه بمهنة " + title + "، وبعد أن أقر الطرفان بأهليتهما في إبرام هذا العقد تم الاتفاق على ما يلي:\n        </div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الأول</span></div>\n        <div class=\"clause-body\">يعتبر التمهيد السابق جزءاً لا يتجزأ من هذا العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثاني</span><span class=\"clause-name\">طبيعة العمل</span></div>\n        <div class=\"clause-body\">تعاقد الطرف الأول مع الطرف الثاني للعمل لديه بمهنة " + title + " داخل دولة الكويت.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثالث</span><span class=\"clause-name\">فترة التجربة</span></div>\n        <div class=\"clause-body\">يخضع الطرف الثاني لفترة تجربة لمدة لا تزيد عن <strong>100 يوم عمل</strong>، ويحق لكل طرف إنهاء العقد خلال تلك الفترة دون إخطار.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الرابع</span><span class=\"clause-name\">قيمة الأجر</span></div>\n        <div class=\"clause-body\">يتقاضى الطرف الثاني عن تنفيذ هذا العقد أجراً مقداره " + salary + " دينار يدفع في نهاية كل شهر، ولا يجوز للطرف الأول تخفيض الأجر أثناء سريان هذا العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الخامس</span><span class=\"clause-name\">نفاذ العقد</span></div>\n        <div class=\"clause-body\">يبدأ نفاذ العقد اعتباراً من " + effDate + "، ويلتزم الطرف الثاني بالقيام بأداء عمله طوال مدة نفاذه.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند السادس</span><span class=\"clause-name\">مدة العقد</span></div>\n        <div class=\"clause-body\">" + clause6 + "</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند السابع</span><span class=\"clause-name\">الإجازة السنوية</span></div>\n        <div class=\"clause-body\">للطرف الثاني الحق في إجازة سنوية مدفوعة الأجر مدتها <strong>30 يوماً</strong>، ولا يستحقها عن السنة الأولى إلا بعد انقضاء مدة تسعة أشهر تحسب من تاريخ نفاذ العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثامن</span><span class=\"clause-name\">عدد ساعات العمل</span></div>\n        <div class=\"clause-body\">لا يجوز للطرف الأول تشغيل الطرف الثاني لمدة تزيد عن <strong>ثماني ساعات</strong> يومياً تتخللها فترة راحة لا تقل عن ساعة، باستثناء الحالات المقررة قانوناً.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند التاسع</span><span class=\"clause-name\">قيمة تذكرة السفر</span></div>\n        <div class=\"clause-body\">يتحمل الطرف الأول مصاريف عودة الطرف الثاني إلى بلده عند انتهاء علاقة العمل ومغادرته نهائياً للبلاد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند العاشر</span><span class=\"clause-name\">التأمين ضد إصابات وأمراض العمل</span></div>\n        <div class=\"clause-body\">يلتزم الطرف الأول بالتأمين على الطرف الثاني ضد إصابات وأمراض العمل، كما يلتزم بقيمة التأمين الصحي طبقاً للقانون رقم (1) لسنة 1999.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الحادي عشر</span><span class=\"clause-name\">مكافأة نهاية الخدمة</span></div>\n        <div class=\"clause-body\">يستحق الطرف الثاني مكافأة نهاية الخدمة المنصوص عليها بالقوانين المنظمة.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثاني عشر</span><span class=\"clause-name\">القانون الواجب التطبيق</span></div>\n        <div class=\"clause-body\">تسري أحكام قانون العمل في القطاع الأهلي رقم 6 لسنة 2010 والقرارات المنفذة له فيما لم يرد بشأنه نص في هذا العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثالث عشر</span><span class=\"clause-name\">شروط خاصة</span></div>\n        <div class=\"clause-body\">1: لا يوجد<br>2: لا يوجد</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الرابع عشر</span><span class=\"clause-name\">المحكمة المختصة</span></div>\n        <div class=\"clause-body\">تختص المحكمة الكلية ودوائرها العمالية طبقاً لأحكام القانون رقم 46 لسنة 1987 بنظر كافة المنازعات الناشئة عن تطبيق أو تفسير هذا العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الخامس عشر</span><span class=\"clause-name\">لغة العقد</span></div>\n        <div class=\"clause-body\">حرر هذا العقد باللغة العربية، ويعتد بنصوص اللغة العربية عند وقوع أي تعارض.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند السادس عشر</span><span class=\"clause-name\">نسخ العقد</span></div>\n        <div class=\"clause-body\">حرر هذا العقد من ثلاث نسخ بيد كل طرف نسخة للعمل بموجبها والثالثة تودع لدى الهيئة العامة للقوى العاملة.</div>\n      </div>\n\n      <div class=\"signature-row\">\n        <div class=\"sig-party\">\n          <p>الطرف الأول</p>\n          <div class=\"sig-line\"></div>\n        </div>\n        <div class=\"sig-party\">\n          <p>الطرف الثاني</p>\n          <div class=\"sig-line\"></div>\n        </div>\n      </div>\n    ";
+    document.getElementById('contract-preview').innerHTML = "\n      <div class=\"contract-title\">\n        <img src=\"Public-Authority-of-Manpower1.png\" alt=\"الهيئة العامة للقوى العاملة\" style=\"width:153px;height:auto;margin-bottom:10px;\">\n        <h2>نموذج عـقـد عـمـل</h2>\n        <p>في القطاع الأهلي · دولة الكويت</p>\n      </div>\n\n      <div class=\"contract-meta\">\n        الهيئة العامة للقوى العاملة / " + location + "\n        &nbsp;&nbsp;|&nbsp;&nbsp;\n        يوم " + day + " الموافق " + date + "\n      </div>\n\n      <p class=\"contract-intro\">تحرر هذا العقد بين كل من:</p>\n\n      <div class=\"party-block\">\n        <span class=\"party-tag\">الطرف الأول · صاحب العمل</span>\n        <table>\n          <tr><td>الشركة</td><td>" + company + "</td></tr>\n          <tr><td>المفوض بالتوقيع</td><td>" + authName + "</td></tr>\n          <tr><td>الرقم المدني</td><td>" + authCivil + "</td></tr>\n        </table>\n      </div>\n\n      <div class=\"party-block\">\n        <span class=\"party-tag\">الطرف الثاني · الموظف</span>\n        <table>\n          <tr><td>الاسم</td><td>" + empName + "</td></tr>\n          <tr><td>الجنسية</td><td>" + natl + "</td></tr>\n          <tr><td>الرقم المدني</td><td>" + empCivil + "</td></tr>\n        </table>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">تمهيد</span></div>\n        <div class=\"clause-body\">\n          يمتلك الطرف الأول منشأة باسم " + company + " تعمل في مجال " + compSpec + "، ويرغب في التعاقد مع الطرف الثاني للعمل لديه بمهنة " + title + "، وبعد أن أقر الطرفان بأهليتهما في إبرام هذا العقد تم الاتفاق على ما يلي:\n        </div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الأول</span></div>\n        <div class=\"clause-body\">يعتبر التمهيد السابق جزءاً لا يتجزأ من هذا العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثاني</span><span class=\"clause-name\">طبيعة العمل</span></div>\n        <div class=\"clause-body\">تعاقد الطرف الأول مع الطرف الثاني للعمل لديه بمهنة " + title + " داخل دولة الكويت.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثالث</span><span class=\"clause-name\">فترة التجربة</span></div>\n        <div class=\"clause-body\">يخضع الطرف الثاني لفترة تجربة لمدة لا تزيد عن <strong>100 يوم عمل</strong>، ويحق لكل طرف إنهاء العقد خلال تلك الفترة دون إخطار.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الرابع</span><span class=\"clause-name\">قيمة الأجر</span></div>\n        <div class=\"clause-body\">يتقاضى الطرف الثاني عن تنفيذ هذا العقد أجراً مقداره " + salary + " دينار يدفع في نهاية كل شهر، ولا يجوز للطرف الأول تخفيض الأجر أثناء سريان هذا العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الخامس</span><span class=\"clause-name\">نفاذ العقد</span></div>\n        <div class=\"clause-body\">يبدأ نفاذ العقد اعتباراً من " + effDate + "، ويلتزم الطرف الثاني بالقيام بأداء عمله طوال مدة نفاذه.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند السادس</span><span class=\"clause-name\">مدة العقد</span></div>\n        <div class=\"clause-body\">" + clause6 + "</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند السابع</span><span class=\"clause-name\">الإجازة السنوية</span></div>\n        <div class=\"clause-body\">للطرف الثاني الحق في إجازة سنوية مدفوعة الأجر مدتها <strong>30 يوماً</strong>، ولا يستحقها عن السنة الأولى إلا بعد انقضاء مدة تسعة أشهر تحسب من تاريخ نفاذ العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثامن</span><span class=\"clause-name\">عدد ساعات العمل</span></div>\n        <div class=\"clause-body\">لا يجوز للطرف الأول تشغيل الطرف الثاني لمدة تزيد عن <strong>ثماني ساعات</strong> يومياً تتخللها فترة راحة لا تقل عن ساعة، باستثناء الحالات المقررة قانوناً.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند التاسع</span><span class=\"clause-name\">قيمة تذكرة السفر</span></div>\n        <div class=\"clause-body\">يتحمل الطرف الأول مصاريف عودة الطرف الثاني إلى بلده عند انتهاء علاقة العمل ومغادرته نهائياً للبلاد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند العاشر</span><span class=\"clause-name\">التأمين ضد إصابات وأمراض العمل</span></div>\n        <div class=\"clause-body\">يلتزم الطرف الأول بالتأمين على الطرف الثاني ضد إصابات وأمراض العمل، كما يلتزم بقيمة التأمين الصحي طبقاً للقانون رقم (1) لسنة 1999.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الحادي عشر</span><span class=\"clause-name\">مكافأة نهاية الخدمة</span></div>\n        <div class=\"clause-body\">يستحق الطرف الثاني مكافأة نهاية الخدمة المنصوص عليها بالقوانين المنظمة.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثاني عشر</span><span class=\"clause-name\">القانون الواجب التطبيق</span></div>\n        <div class=\"clause-body\">تسري أحكام قانون العمل في القطاع الأهلي رقم 6 لسنة 2010 والقرارات المنفذة له فيما لم يرد بشأنه نص في هذا العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الثالث عشر</span><span class=\"clause-name\">شروط خاصة</span></div>\n        <div class=\"clause-body\">1: لا يوجد<br>2: لا يوجد</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الرابع عشر</span><span class=\"clause-name\">المحكمة المختصة</span></div>\n        <div class=\"clause-body\">تختص المحكمة الكلية ودوائرها العمالية طبقاً لأحكام القانون رقم 46 لسنة 1987 بنظر كافة المنازعات الناشئة عن تطبيق أو تفسير هذا العقد.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند الخامس عشر</span><span class=\"clause-name\">لغة العقد</span></div>\n        <div class=\"clause-body\">حرر هذا العقد باللغة العربية، ويعتد بنصوص اللغة العربية عند وقوع أي تعارض.</div>\n      </div>\n\n      <div class=\"clause\">\n        <div class=\"clause-title\"><span class=\"clause-num\">البند السادس عشر</span><span class=\"clause-name\">نسخ العقد</span></div>\n        <div class=\"clause-body\">حرر هذا العقد من ثلاث نسخ بيد كل طرف نسخة للعمل بموجبها والثالثة تودع لدى الهيئة العامة للقوى العاملة.</div>\n      </div>\n\n      <div class=\"signature-row\">\n        <div class=\"sig-party\">\n          <p>الطرف الأول</p>\n          <div class=\"sig-line\"></div>\n        </div>\n        <div class=\"sig-party\">\n          <p>الطرف الثاني</p>\n          <div class=\"sig-line\"></div>\n        </div>\n      </div>\n    ";
   }
 
 
   window.exportPDF = function() {
-    // Open a clean window with only the contract content — avoids ERPNext wrapper interference
+    // Open a clean window with only the contract content -- avoids ERPNext wrapper interference
     const content = document.getElementById('contract-preview').innerHTML;
     const printWin = window.open('', '_blank');
-    printWin.document.write("\n\n<style>\n  :root {\n    --navy: #0E2841;\n    --blue: #2C7DA5;\n    --blue-light: #e8f4fb;\n    --blue-mid: #b5d4f4;\n    --green: #1d6b44;\n    --green-light: #eaf6f0;\n    --green-border: #a3d9bb;\n    --bg: #f7f8fa;\n    --sidebar-bg: #0E2841;\n    --sidebar-text: #b8cfe0;\n    --sidebar-active: #2C7DA5;\n    --text: #1a2a3a;\n    --text-muted: #5a7080;\n    --border: #dde4ea;\n    --white: #ffffff;\n    --radius: 8px;\n  }\n\n  * { margin: 0; padding: 0; box-sizing: border-box; }\n\n  body {\n    font-family: Tajawal, sans-serif;\n    background: var(--bg);\n    color: var(--text);\n    direction: rtl;\n  }\n\n  .app { display: flex; min-height: 100vh; }\n\n  /* ── SIDEBAR ── */\n  aside {\n    width: 260px;\n    min-width: 260px;\n    background: var(--sidebar-bg);\n    position: fixed;\n    top: 0; right: 0; bottom: 0;\n    overflow-y: auto;\n    z-index: 100;\n    display: flex;\n    flex-direction: column;\n  }\n\n  .sidebar-logo {\n    padding: 24px 20px 16px;\n    direction: rtl;\n    text-align: right;\n    border-bottom: 1px solid rgba(255,255,255,0.08);\n  }\n\n  .wiki-badge {\n    display: inline-block;\n    background: var(--blue);\n    color: #fff !important;\n    font-size: 10px;\n    font-weight: 700;\n    letter-spacing: 1px;\n    text-transform: uppercase;\n    padding: 3px 8px;\n    border-radius: 4px;\n    margin-bottom: 8px;\n    font-family: Tajawal, sans-serif;\n  }\n\n  .sidebar-logo h2 {\n    color: #fff !important;\n    font-family: Tajawal, sans-serif;\n    font-size: 17px;\n    font-weight: 700;\n    line-height: 1.3;\n  }\n  .sidebar-logo p { color: var(--sidebar-text) !important; font-size: 12px; margin-top: 4px; font-family: Tajawal, sans-serif; }\n\n  nav { padding: 12px 0; flex: 1; }\n\n  .nav-section-label {\n    color: rgba(184,207,224,0.95) !important;\n    font-size: 11px;\n    font-weight: 700;\n    padding: 12px 20px 6px;\n    font-family: Tajawal, sans-serif;\n  }\n\n  nav a {\n    display: flex;\n    align-items: center;\n    gap: 10px;\n    direction: rtl;\n    color: #d8e8f4 !important;\n    text-decoration: none !important;\n    font-size: 13.5px;\n    padding: 8px 20px;\n    border-right: 3px solid transparent;\n    transition: all 0.15s;\n    font-family: Tajawal, sans-serif;\n    cursor: pointer;\n  }\n  nav a:hover { color: #fff !important; background: rgba(255,255,255,0.05); border-right-color: var(--sidebar-active); }\n  nav a.active { color: #fff !important; background: rgba(44,125,165,0.15); border-right-color: var(--sidebar-active); }\n  .nav-icon { width: 18px; text-align: center; font-size: 14px; opacity: 1 !important; color: #d8e8f4 !important; }\n\n  .sidebar-footer {\n    padding: 16px 20px;\n  }\n\n  .btn-print {\n    width: 100%;\n    padding: 10px;\n    background: var(--blue);\n    color: #fff;\n    border: none;\n    border-radius: 6px;\n    font-family: Tajawal, sans-serif;\n    font-size: 14px;\n    font-weight: 600;\n    cursor: pointer;\n    transition: background 0.15s;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    gap: 8px;\n  }\n  .btn-print:hover { background: #2569a0; }\n\n  /* ── MAIN ── */\n  main {\n    margin-right: 260px;\n    flex: 1;\n    padding: 48px 56px;\n    max-width: calc(100% - 260px);\n    box-sizing: border-box;\n    overflow-x: hidden;\n  }\n\n  /* ── HERO ── */\n  .hero {\n    background: var(--navy);\n    border-radius: 12px;\n    padding: 36px 44px;\n    margin-bottom: 40px;\n    position: relative;\n    overflow: hidden;\n    direction: rtl;\n    text-align: right;\n  }\n  .hero::before { content:''; position:absolute; top:-40px; left:-40px; width:200px; height:200px; border-radius:50%; background:rgba(44,125,165,0.2); }\n  .hero::after  { content:''; position:absolute; bottom:-30px; left:60px; width:120px; height:120px; border-radius:50%; background:rgba(44,125,165,0.12); }\n\n  .hero-badge {\n    display: block;\n    text-align: right;\n    background: rgba(44,125,165,0.35);\n    color: #8ecef0;\n    font-size: 11px;\n    font-weight: 700;\n    letter-spacing: 1px;\n    padding: 4px 12px;\n    border-radius: 20px;\n    margin-bottom: 14px;\n    border: 1px solid rgba(44,125,165,0.4);\n    position: relative;\n    font-family: Tajawal, sans-serif;\n  }\n  .hero h1 {\n    font-family: Tajawal, sans-serif;\n    font-size: 32px;\n    color: #fff;\n    font-weight: 700;\n    line-height: 1.3;\n    margin-bottom: 10px;\n    position: relative;\n    text-align: right;\n  }\n  .hero p { color: rgba(255,255,255,0.65); font-size: 14px; line-height: 1.7; position: relative; text-align: right; }\n\n  /* ── SECTIONS ── */\n  .form-section { margin-bottom: 48px; scroll-margin-top: 24px; direction: rtl; }\n  .section-header { display:flex; align-items:center; gap:12px; margin-bottom:20px; padding-bottom:12px; }\n  .section-icon { width:36px; height:36px; background:var(--blue-light); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink: 0; }\n  .section-header h2 { font-family:Tajawal,sans-serif; font-size:20px; color:var(--navy); font-weight:800; letter-spacing:-0.3px; }\n\n  /* ── FORM GRID ── */\n  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }\n  .form-grid.cols-3 { grid-template-columns: 1fr 1fr 1fr; }\n  .form-grid.cols-1 { grid-template-columns: 1fr; }\n\n  .field {\n    display: flex;\n    flex-direction: column;\n    gap: 6px;\n  }\n  .field.span-2 { grid-column: span 2; }\n\n  .field label {\n    font-size: 13px;\n    font-weight: 700;\n    color: var(--navy);\n    display: flex;\n    align-items: center;\n    gap: 6px;\n    direction: rtl;\n  }\n  .field label .req { color: var(--blue); font-size: 15px; line-height: 1; }\n\n  .field input,\n  .field select,\n  .field textarea {\n    border: 1.5px solid var(--border);\n    border-radius: 6px;\n    padding: 10px 14px;\n    font-size: 14px;\n    font-family: Tajawal, sans-serif;\n    color: var(--text);\n    background: var(--white);\n    transition: border-color 0.15s, box-shadow 0.15s;\n    outline: none;\n    direction: rtl;\n  }\n  .field input:focus,\n  .field select:focus,\n  .field textarea:focus {\n    border-color: var(--blue);\n    box-shadow: 0 0 0 3px rgba(44,125,165,0.12);\n  }\n  .field input::placeholder,\n  .field textarea::placeholder { color: #bbb; }\n  .field input[type=\"number\"] { direction: rtl; text-align: right; }\n  .field input[type=\"date\"] { direction: rtl; unicode-bidi: bidi-override; text-align: right; }\n\n  .field .hint { font-size: 11.5px; color: var(--text-muted); }\n\n  /* ── CONTRACT TYPE TOGGLE ── */\n  .toggle-group { display: flex; gap: 10px; }\n  .toggle-option {\n    flex: 1;\n    padding: 12px 16px;\n    border: 1.5px solid var(--border);\n    border-radius: 8px;\n    background: var(--white);\n    cursor: pointer;\n    transition: all 0.15s;\n    text-align: center;\n  }\n  .toggle-option:hover { border-color: var(--blue-mid); background: var(--blue-light); }\n  .toggle-option.selected { border-color: var(--blue); background: var(--blue-light); }\n  .toggle-option input { display: none; }\n  .toggle-option-label { font-size: 13.5px; font-weight: 600; color: var(--text); display: block; font-family: Tajawal, sans-serif; }\n  .toggle-option-hint { font-size: 11px; color: var(--text-muted); margin-top: 3px; display: block; font-family: Tajawal, sans-serif; }\n  .toggle-option.selected .toggle-option-label { color: var(--navy); }\n\n  /* Years field visibility */\n  .years-field { transition: opacity 0.2s; }\n  .years-field.hidden { opacity: 0.3; pointer-events: none; }\n\n  /* ── PREVIEW ── */\n  .preview-wrap {\n    background: var(--white);\n    border-radius: var(--radius);\n    overflow: hidden;\n    width: 100%;\n    max-width: 100%;\n    box-sizing: border-box;\n  }\n  .preview-header {\n    background: var(--navy);\n    padding: 14px 24px;\n    display: flex;\n    align-items: center;\n    justify-content: space-between;\n  }\n  .preview-header span { color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 600; font-family: Tajawal, sans-serif; }\n  .preview-body {\n    padding: 36px 40px;\n    direction: rtl;\n    text-align: right;\n    font-family: Tajawal, sans-serif;\n    font-size: 13.5px;\n    line-height: 2;\n    color: var(--text);\n    max-height: 900px;\n    overflow-y: auto;\n    overflow-x: hidden;\n    width: 100%;\n    max-width: 100%;\n    box-sizing: border-box;\n    word-wrap: break-word;\n    overflow-wrap: break-word;\n  }\n\n  .contract-title {\n    text-align: center;\n    margin-bottom: 8px;\n  }\n  .contract-title img {\n    display: block;\n    margin: 0 auto 4px;\n  }\n  .contract-title h2 {\n    font-size: 20px;\n    font-weight: 700;\n    color: var(--navy);\n    font-family: Tajawal, sans-serif;\n    margin-top: 2px;\n  }\n  .contract-title p {\n    font-size: 14px;\n    font-weight: 500;\n    color: var(--text-muted);\n  }\n\n  .contract-meta {\n    text-align: center;\n    margin: 16px 0;\n    padding: 10px;\n    font-size: 13px;\n    color: var(--text-muted);\n  }\n\n  .contract-intro {\n    margin: 20px 0;\n    font-size: 14px;\n    font-weight: 600;\n    direction: rtl;\n    text-align: right;\n  }\n\n  .party-block {\n    background: var(--bg);\n    border-radius: 8px;\n    padding: 16px 20px;\n    margin: 12px 0;\n    border-right: 3px solid var(--blue);\n    border-left: 3px solid var(--blue);\n    direction: rtl;\n    text-align: right;\n    width: 100%;\n    box-sizing: border-box;\n    overflow: hidden;\n  }\n  .party-block .party-tag {\n    display: block;\n    text-align: center;\n    background: var(--blue);\n    color: #fff;\n    font-size: 11px;\n    font-weight: 700;\n    padding: 2px 10px;\n    border-radius: 4px;\n    margin: -16px -20px 10px -20px;\n    font-family: Tajawal, sans-serif;\n  }\n  .party-block table { width: 100%; border-collapse: collapse; direction: rtl; }\n  .party-block td { padding: 6px 0; font-size: 13px; text-align: right; }\n  .party-block td:first-child { font-weight: 700; width: 180px; color: var(--navy); }\n  .party-block td:last-child { color: var(--text-muted); font-weight: 400; }\n\n  .clause {\n    margin: 20px 0;\n  }\n  .clause-title {\n    font-size: 14px;\n    font-weight: 700;\n    color: var(--navy);\n    margin-bottom: 6px;\n    direction: rtl;\n    text-align: right;\n    display: block;\n    line-height: 2;\n  }\n  .clause-num {\n    display: inline-block;\n    background: var(--navy);\n    color: #fff !important;\n    font-size: 11px;\n    font-weight: 700;\n    padding: 3px 10px;\n    border-radius: 4px;\n    font-family: Tajawal, sans-serif;\n    vertical-align: middle;\n    line-height: 1.6;\n  }\n  .clause-name {\n    display: inline;\n    font-size: 14px;\n    font-weight: 700;\n    color: var(--navy);\n    padding-right: 14px;\n    margin-right: 8px;\n    border-right: 2px solid rgba(44,125,165,0.35);\n    font-family: Tajawal, sans-serif;\n    vertical-align: middle;\n  }\n  .clause-body {\n    font-size: 13.5px;\n    line-height: 1.9;\n    color: var(--text);\n    padding-right: 0;\n    width: 100%;\n    max-width: 100%;\n    box-sizing: border-box;\n    overflow-wrap: break-word;\n    word-wrap: break-word;\n    word-break: break-word;\n    white-space: normal;\n  }\n\n  .field-val {\n    display: inline;\n    color: var(--blue);\n    font-weight: 700;\n  }\n  .field-empty {\n    display: inline;\n    color: #ccc;\n    font-weight: 400;\n    font-style: italic;\n    font-size: 12px;\n  }\n\n  .signature-row {\n    display: flex;\n    justify-content: space-between;\n    margin-top: 40px;\n    padding-top: 20px;\n  }\n  .sig-party { text-align: center; width: 200px; }\n  .sig-party p { font-size: 13px; font-weight: 700; color: var(--navy); margin-bottom: 40px; }\n  .sig-line { border-bottom: 1px solid var(--text); width: 160px; margin: 0 auto; }\n\n  /* ── PRINT ── */\n  @page {\n    size: A4;\n    margin: 15mm;\n  }\n\n  @media print {\n    * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }\n\n    aside, .hero, .section-header, .preview-header,\n    #section-header, #section-firstparty, #section-secondparty, #section-terms {\n      display: none !important;\n    }\n\n    /* Hide ERPNext branding, subscription, and footer elements */\n    .web-footer, .footer, .powered-by, .subscribe,\n    [class*=\"powered\"], [class*=\"subscribe\"],\n    .website-footer, .footer-subscribe, .email-subscribe,\n    footer, .btn-subscribe, .frappe-footer,\n    .footer-powered, .web-footer-container {\n      display: none !important;\n    }\n\n    body {\n      background: #fff !important;\n      direction: rtl !important;\n    }\n\n    main {\n      margin: 0 !important;\n      padding: 0 !important;\n      max-width: 100% !important;\n      width: 100% !important;\n    }\n\n    #section-preview {\n      margin: 0 !important;\n      padding: 0 !important;\n    }\n\n    .preview-wrap {\n      border: none !important;\n      box-shadow: none !important;\n      padding: 0 !important;\n      margin: 0 !important;\n    }\n\n    .preview-body {\n      max-height: none !important;\n      overflow: visible !important;\n      padding: 0 !important;\n      font-size: 12pt !important;\n      line-height: 1.9 !important;\n      direction: rtl !important;\n    }\n\n    /* ── Header centering ── */\n    .contract-title {\n      text-align: center !important;\n      direction: ltr !important;\n      margin: 0 auto 4px !important;\n      width: 100% !important;\n    }\n    .contract-title img {\n      width: 150px !important;\n      height: auto !important;\n      display: block !important;\n      margin: 0 auto 0 auto !important;\n    }\n    .contract-title h2 {\n      font-size: 18pt !important;\n      text-align: center !important;\n      margin: 2px 0 0 0 !important;\n      direction: rtl !important;\n    }\n    .contract-title p {\n      text-align: center !important;\n      direction: rtl !important;\n      margin: 0 !important;\n    }\n    .contract-meta {\n      text-align: center !important;\n      direction: rtl !important;\n      border-color: #dde4ea !important;\n    }\n\n    /* ── Party blocks: borders on both sides, tag spans full width ── */\n    .party-block {\n      break-inside: avoid;\n      page-break-inside: avoid;\n      border-right: 3px solid #2C7DA5 !important;\n      border-left: 3px solid #2C7DA5 !important;\n      background: #f7f8fa !important;\n      padding: 0 20px 16px 20px !important;\n      overflow: hidden !important;\n    }\n    .party-block .party-tag {\n      background: #2C7DA5 !important;\n      color: #fff !important;\n      text-align: center !important;\n      display: block !important;\n      margin: 0 -20px 10px -20px !important;\n      padding: 4px 10px !important;\n      border-radius: 0 !important;\n    }\n\n    .clause { break-inside: avoid; page-break-inside: avoid; }\n    .clause-num { background: #0E2841 !important; color: #fff !important; }\n\n    /* ── Signature row: force both parties visible ── */\n    .signature-row {\n      display: flex !important;\n      justify-content: space-between !important;\n      break-inside: avoid !important;\n      page-break-inside: avoid !important;\n      page-break-before: avoid !important;\n      margin-top: 40px !important;\n      padding-top: 20px !important;\n      width: 100% !important;\n    }\n    .sig-party {\n      width: 40% !important;\n      text-align: center !important;\n      display: block !important;\n      visibility: visible !important;\n    }\n    .sig-party p {\n      visibility: visible !important;\n      display: block !important;\n    }\n    .sig-line {\n      visibility: visible !important;\n      display: block !important;\n      border-bottom: 1px solid #1a2a3a !important;\n    }\n\n    .field-val { color: #1a2a3a !important; font-weight: 700 !important; }\n    .field-empty { color: #aaa !important; }\n\n    /* ── Page number footer ── */\n    .print-page-footer {\n      display: block !important;\n      position: fixed;\n      bottom: 0;\n      left: 0;\n      right: 0;\n      text-align: center;\n      font-size: 10pt;\n      color: #5a7080;\n      font-family: Tajawal, sans-serif;\n      padding: 4px 0;\n    }\n  }\n\n  @media (max-width: 900px) {\n    aside { display: none; }\n    main { margin-right: 0; padding: 24px 20px; max-width: 100%; }\n    .form-grid { grid-template-columns: 1fr; }\n    .field.span-2 { grid-column: span 1; }\n    .form-grid.cols-3 { grid-template-columns: 1fr; }\n  }\n\n\n  /* ── ERPNEXT CONTAINMENT FIXES ── */\n  .preview-body *, .clause-body, .party-block, .contract-meta,\n  .contract-intro, .clause, .signature-row {\n    max-width: 100%;\n    box-sizing: border-box;\n  }\n  .preview-body p, .preview-body div, .preview-body span {\n    overflow-wrap: break-word;\n    word-wrap: break-word;\n  }\n\n  /* ── ERPNEXT COLOR OVERRIDES ── */\n  aside a, aside a:visited, aside a:hover, aside a:active,\n  aside nav a, aside nav a:visited {\n    color: #d8e8f4 !important;\n    text-decoration: none !important;\n  }\n  aside nav a:hover, aside nav a.active {\n    color: #ffffff !important;\n  }\n  aside * { box-sizing: border-box; }\n</style>\n\n" + content + "\n\n");
+    printWin.document.write(`<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>عقد-عمل</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  @page {
+    size: A4;
+    margin: 15mm;
+    @bottom-center {
+      content: counter(page);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 10pt;
+      color: #5a7080;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+  body {
+    font-family: 'Tajawal', sans-serif;
+    direction: rtl;
+    color: #1a2a3a;
+    background: #fff;
+    padding: 0;
+    line-height: 1.9;
+    font-size: 12pt;
+  }
+
+  /* Header */
+  .contract-title {
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .contract-title img {
+    display: block;
+    margin: 0 auto 2px;
+    width: 150px;
+    height: auto;
+  }
+  .contract-title h2 {
+    font-size: 18pt;
+    font-weight: 700;
+    color: #0E2841;
+    margin-top: 2px;
+  }
+  .contract-title p {
+    font-size: 11pt;
+    font-weight: 500;
+    color: #5a7080;
+  }
+
+  /* Meta line */
+  .contract-meta {
+    text-align: center;
+    margin: 10px 0;
+    padding: 8px;
+    font-size: 10pt;
+    color: #5a7080;
+  }
+
+  /* Intro */
+  .contract-intro {
+    margin: 16px 0;
+    font-size: 11pt;
+    font-weight: 600;
+    text-align: right;
+  }
+
+  /* Party blocks */
+  .party-block {
+    background: #f7f8fa;
+    border-radius: 6px;
+    padding: 0 20px 14px 20px;
+    margin: 10px 0;
+    border-right: 3px solid #2C7DA5;
+    border-left: 3px solid #2C7DA5;
+    overflow: hidden;
+  }
+  .party-block .party-tag {
+    display: block;
+    text-align: center;
+    background: #2C7DA5;
+    color: #fff;
+    font-size: 10pt;
+    font-weight: 700;
+    padding: 4px 10px;
+    margin: 0 -20px 10px -20px;
+    border-radius: 0;
+  }
+  .party-block table { width: 100%; border-collapse: collapse; }
+  .party-block td { padding: 5px 0; font-size: 10.5pt; text-align: right; }
+  .party-block td:first-child { font-weight: 700; width: 160px; color: #0E2841; }
+  .party-block td:last-child { color: #5a7080; }
+
+  /* Clauses */
+  .clause {
+    margin: 16px 0;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .clause-title {
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0E2841;
+    margin-bottom: 4px;
+    text-align: right;
+    line-height: 2;
+  }
+  .clause-num {
+    display: inline-block;
+    background: #0E2841;
+    color: #fff;
+    font-size: 9pt;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 4px;
+    vertical-align: middle;
+    line-height: 1.6;
+  }
+  .clause-name {
+    display: inline;
+    font-size: 11pt;
+    font-weight: 700;
+    color: #0E2841;
+    padding-right: 14px;
+    margin-right: 8px;
+    border-right: 2px solid rgba(44,125,165,0.35);
+    vertical-align: middle;
+  }
+  .clause-body {
+    font-size: 10.5pt;
+    line-height: 1.9;
+    color: #1a2a3a;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .field-val { color: #2C7DA5; font-weight: 700; }
+  .field-empty { color: #ccc; font-weight: 400; font-style: italic; font-size: 9pt; }
+
+  /* Signatures */
+  .signature-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    padding-top: 20px;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  .sig-party { text-align: center; width: 40%; }
+  .sig-party p { font-size: 11pt; font-weight: 700; color: #0E2841; margin-bottom: 50px; }
+  .sig-line { border-bottom: 1px solid #1a2a3a; width: 160px; margin: 0 auto; }
+</style>
+</head>
+<body>
+${content}
+</body>
+</html>`);
     printWin.document.close();
     // Wait for fonts to load, then print
     printWin.onload = function() {
