@@ -9,7 +9,7 @@ frappe.ui.form.on('Employee', {
                         label: 'Location / Region',
                         fieldname: 'location',
                         fieldtype: 'Select',
-                        options: 'العاصمة\nحولي\nالاحمدي',
+                        options: 'العاصمة\nحولي\nالفروانية\nالجهراء\nالأحمدي\nمبارك الكبير',
                         reqd: 1
                     },
                     {
