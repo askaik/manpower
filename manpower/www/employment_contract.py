@@ -21,6 +21,8 @@ def get_context(context):
     context.val_company_spec = ''
     
     if employee_id:
+        context.val_contract_logo = ''
+        
         try:
             emp = frappe.get_doc("Employee", employee_id)
             context.emp = emp
@@ -45,6 +47,7 @@ def get_context(context):
                 
                 context.val_company_name = company.get('company_name') or ''
                 context.val_company_spec = company.get('custom_specialization_') or ''
+                context.val_contract_logo = company.get('custom_contract_logo') or ''
                 
                 auth_name_param = frappe.form_dict.get('auth_name')
                 auth_list = company.get('custom_auth_name')

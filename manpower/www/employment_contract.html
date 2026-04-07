@@ -628,7 +628,7 @@
   <aside>
     <div class="sidebar-logo">
       <div style="text-align:center;margin-bottom:12px;">
-        <img src="Public-Authority-of-Manpower1.png" alt="الهيئة العامة للقوى العاملة" style="width:376px;height:auto;filter:brightness(0) invert(1);opacity:0.9;">
+        <img src="{{ val_contract_logo if val_contract_logo else 'Public-Authority-of-Manpower1.png' }}" alt="Contract Logo" style="width:376px;height:auto;opacity:0.9; {{ 'filter:brightness(0) invert(1);' if not val_contract_logo else '' }}">
       </div>
       <div class="wiki-badge">KPG</div>
       <h2>نموذج عقد العمل</h2>
@@ -871,7 +871,7 @@
 
     document.getElementById('contract-preview').innerHTML = `
       <div class="contract-title">
-        <img src="Public-Authority-of-Manpower1.png" alt="الهيئة العامة للقوى العاملة" style="width:153px;height:auto;margin-bottom:10px;">
+        <img src="{{ val_contract_logo if val_contract_logo else 'Public-Authority-of-Manpower1.png' }}" alt="Contract Logo" style="width:153px;height:auto;margin-bottom:10px;">
         <h2>نموذج عـقـد عـمـل</h2>
         <p>في القطاع الأهلي · دولة الكويت</p>
       </div>
