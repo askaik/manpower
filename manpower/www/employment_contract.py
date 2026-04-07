@@ -23,6 +23,7 @@ def get_context(context):
             if emp.company:
                 company = frappe.get_doc("Company", emp.company)
                 context.company = company
+                context.contract_logo = company.custom_contract_logo or ''
                 
                 if company.custom_auth_name:
                     auth = company.custom_auth_name[0]
